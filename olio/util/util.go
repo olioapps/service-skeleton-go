@@ -20,13 +20,6 @@ func GetEnv(environmentVarName, defaultValue string) string {
 	return defaultValue
 }
 
-func SkipTwilioIntegration() bool {
-	if GetEnv("SKIP_TWILIO_INTEGRATION", "") == "true" || GetEnv("GIN_ENV", "") == "test" {
-		return true
-	}
-	return false
-}
-
 func RandomString() string {
 	return bson.NewObjectId().Hex()
 }

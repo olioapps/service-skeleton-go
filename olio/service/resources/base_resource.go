@@ -8,14 +8,12 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/thedataguild/faer/api"
-	"github.com/thedataguild/faer/models"
-	"github.com/thedataguild/faer/util"
+	"github.com/rachoac/service-skeleton-go/olio/api"
+	"github.com/rachoac/service-skeleton-go/olio/util"
 )
 
 type BaseResource struct {
-	applicationContext *api.CoreAPI
-	ginEngine          *gin.Engine
+	ginEngine *gin.Engine
 }
 
 func (self *BaseResource) returnJSON(c *gin.Context, status int, record interface{}) {
@@ -89,30 +87,6 @@ func (self *BaseResource) parseInt(c *gin.Context, paramName string) int64 {
 	return util.StringToInt64(param)
 }
 
-func (self *BaseResource) getCurrentUser(c *gin.Context) *models.User {
-	user, exists := c.Get("currentUser")
-	if !exists {
-		return nil
-	}
-
-	return user.(*models.User)
-}
-func (self *BaseResource) getAccessContext(c *gin.Context) *models.AccessContext {
-	user := self.getCurrentUser(c)
-	requestId, exists := c.Get("Request-Id")
-	if !exists {
-		requestId = ""
-	}
-
-	accessContext := &models.AccessContext{User: user, RequestID: requestId.(string)}
-	token, exists := c.Get("JWT_TOKEN")
-	if exists {
-		accessContext.Permissions = util.TokenToPermissions(token.(string))
-	}
-
-	return accessContext
-}
-
 func (self *BaseResource) parseDate(c *gin.Context, field string) *time.Time {
 	if field == "" {
 		return nil
@@ -158,8 +132,4 @@ func msToTime(ms string) (time.Time, error) {
 	}
 
 	return time.Unix(0, msInt*int64(time.Millisecond)), nil
-}
-
-func (self *BaseResource) createSystemUserAccessContext(requestID string) *models.AccessContext {
-	return self.applicationContext.UsersAPI.CreateSystemAccessContext(requestID)
 }
