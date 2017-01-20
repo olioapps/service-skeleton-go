@@ -1,34 +1,24 @@
 package api
 
 import (
-	"log"
 	"os"
 
+	log "github.com/Sirupsen/logrus"
+
+	"github.com/rachoac/service-skeleton-go/olio/common/filters"
+	"github.com/rachoac/service-skeleton-go/olio/common/models"
 	"github.com/rachoac/service-skeleton-go/olio/dao"
 	"github.com/rachoac/service-skeleton-go/olio/db"
 )
 
-//type IDAware interface {
-//	GetID() string
-//}
-//
-//type API interface {
-//	GetByID()
-//}
-//
-//type AccessContext interface {
-//}
-//
-//type Model interface {
-//	GetID() string
-//	GetType() string
-//	GetOwnerID() string
-//	GetCreatedAt() time.Time
-//	GetUpdatedAt() time.Time
-//}
-//
-//type User interface {
-//}
+type OlioAPI interface {
+	GetAPIName() string
+	Create(models.AccessContext, models.OlioModel) error
+	Update(models.AccessContext, models.OlioModel) error
+	Delete(models.AccessContext, string) error
+	Get(models.AccessContext, string) (models.OlioModel, error)
+	Find(models.AccessContext, filters.OlioFilter) ([]models.OlioModel, error)
+}
 
 type CoreAPI struct {
 	ConnectionManager *dao.ConnectionManager
@@ -49,4 +39,9 @@ func (api *CoreAPI) RunMigrations(migrations []db.Migration) {
 		os.Exit(1)
 	}
 
+}
+
+func (api *CoreAPI) RegisterOlioAPI(olioAPI OlioAPI) error {
+	log.Info("Registering API " + olioAPI.GetAPIName())
+	return nil
 }
