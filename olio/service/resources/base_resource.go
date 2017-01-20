@@ -16,7 +16,7 @@ type BaseResource struct {
 	ginEngine *gin.Engine
 }
 
-func (self *BaseResource) returnJSON(c *gin.Context, status int, record interface{}) {
+func (self *BaseResource) ReturnJSON(c *gin.Context, status int, record interface{}) {
 	w := c.Writer
 
 	w.WriteHeader(status)
@@ -27,7 +27,7 @@ func (self *BaseResource) returnJSON(c *gin.Context, status int, record interfac
 	}
 }
 
-func (self *BaseResource) returnXML(c *gin.Context, status int, record interface{}) {
+func (self *BaseResource) ReturnXML(c *gin.Context, status int, record interface{}) {
 	w := c.Writer
 
 	w.WriteHeader(status)
@@ -42,7 +42,7 @@ func (self *BaseResource) returnXML(c *gin.Context, status int, record interface
 	}
 }
 
-func (self *BaseResource) returnError(c *gin.Context, status int, message string) {
+func (self *BaseResource) ReturnError(c *gin.Context, status int, message string) {
 	var outboundStruct struct {
 		Code  int    `json:"code"`
 		Error string `json:"error"`
@@ -50,14 +50,14 @@ func (self *BaseResource) returnError(c *gin.Context, status int, message string
 
 	outboundStruct.Error = message
 	outboundStruct.Code = status
-	self.returnJSON(c, status, outboundStruct)
+	self.ReturnJSON(c, status, outboundStruct)
 }
 
-func (self *BaseResource) returnJSONException(c *gin.Context, exception *api.Exception) {
-	self.returnError(c, exception.ErrorCode, exception.Err)
+func (self *BaseResource) ReturnJSONException(c *gin.Context, exception *api.Exception) {
+	self.ReturnError(c, exception.ErrorCode, exception.Err)
 }
 
-func (self *BaseResource) returnXMLError(c *gin.Context, status int, message string) {
+func (self *BaseResource) ReturnXMLError(c *gin.Context, status int, message string) {
 	type Error struct {
 		Code    int    `json:"code"`
 		Message string `json:"error"`
@@ -66,10 +66,10 @@ func (self *BaseResource) returnXMLError(c *gin.Context, status int, message str
 	outboundStruct := Error{}
 	outboundStruct.Message = message
 	outboundStruct.Code = status
-	self.returnXML(c, status, outboundStruct)
+	self.ReturnXML(c, status, outboundStruct)
 }
 
-func (self *BaseResource) parseString(c *gin.Context, paramName string) string {
+func (self *BaseResource) ParseString(c *gin.Context, paramName string) string {
 	param := c.Query(paramName)
 	if param == "" {
 		param = c.Param(paramName)
@@ -78,8 +78,8 @@ func (self *BaseResource) parseString(c *gin.Context, paramName string) string {
 	return param
 }
 
-func (self *BaseResource) parseInt(c *gin.Context, paramName string) int64 {
-	param := self.parseString(c, paramName)
+func (self *BaseResource) ParseInt(c *gin.Context, paramName string) int64 {
+	param := self.ParseString(c, paramName)
 	if param == "" {
 		return 0
 	}
@@ -87,7 +87,7 @@ func (self *BaseResource) parseInt(c *gin.Context, paramName string) int64 {
 	return util.StringToInt64(param)
 }
 
-func (self *BaseResource) parseDate(c *gin.Context, field string) *time.Time {
+func (self *BaseResource) ParseDate(c *gin.Context, field string) *time.Time {
 	if field == "" {
 		return nil
 	}
@@ -117,8 +117,8 @@ func (self *BaseResource) parseDate(c *gin.Context, field string) *time.Time {
 	return &startAt
 }
 
-func (self *BaseResource) parseArray(c *gin.Context, paramName string) []string {
-	param := self.parseString(c, paramName)
+func (self *BaseResource) ParseArray(c *gin.Context, paramName string) []string {
+	param := self.ParseString(c, paramName)
 	if param == "" {
 		return nil
 	}

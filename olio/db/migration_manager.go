@@ -15,10 +15,7 @@ type MigrationManager struct {
 	migrations        []Migration
 }
 
-type Migration interface {
-	GetMigrationID() int
-	PerformMigration() error
-}
+type Migration func() error
 
 func (self *MigrationManager) getRequiredSchemaVersion() int {
 	return len(self.migrations)
@@ -88,7 +85,7 @@ func (self *MigrationManager) Migrate() error {
 		return errors.New("Invalid target version " + util.Int64ToString(int64(targetVersion)) + "; no migration exists.")
 	}
 
-	err = self.migrations[targetVersion-1].PerformMigration()
+	err = self.migrations[targetVersion-1]()
 
 	if err != nil {
 		return errors.New("Failed to migrate from " + strconv.Itoa(currentVersion) + " to " + strconv.Itoa(targetVersion) + ": " + err.Error())
