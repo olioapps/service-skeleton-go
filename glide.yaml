@@ -1,0 +1,5 @@
+package: ""
+import:
+- package: github.com/glibs/gin-webserver
+- package: gopkg.in/dgrijalva/jwt-go.v2
+

@@ -1,0 +1,8 @@
+hash: fa0ed4f936af4ac399d133436bd46fc02bd4dab065a020222f15ee48f3fa6fde
+updated: 2017-01-19T23:30:56.140491496-08:00
+imports:
+- name: github.com/glibs/gin-webserver
+  version: d9d5bc4eaa44be513329fcecee4c3f8529d632b6
+- name: gopkg.in/dgrijalva/jwt-go.v2
+  version: 268038b363c7a8d7306b8e35bf77a1fde4b0c402
+devImports: []
