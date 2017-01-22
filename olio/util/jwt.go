@@ -4,8 +4,12 @@ import (
 	"strings"
 	"time"
 
+	"crypto/sha256"
+	"encoding/hex"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rachoac/service-skeleton-go/olio/common/models"
+	"golang.org/x/crypto/bcrypt"
 	jwt "gopkg.in/dgrijalva/jwt-go.v2"
 )
 
@@ -102,4 +106,19 @@ func CreateToken(subject string, claims map[string]interface{}) string {
 	t, _ := token.SignedString([]byte(signingKey))
 
 	return t
+}
+
+func ValidatePassword(hashedPassword string, plainPassword string) error {
+	h := sha256.New()
+	h.Write([]byte(plainPassword))
+	foo := h.Sum(nil)
+
+	dst := make([]byte, hex.EncodedLen(len(foo)))
+	hex.Encode(dst, foo)
+
+	fromDb := hashedPassword
+	fromDbBytes := []byte(fromDb)
+
+	err := bcrypt.CompareHashAndPassword(fromDbBytes, dst)
+	return err
 }
