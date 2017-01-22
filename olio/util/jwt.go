@@ -7,15 +7,15 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 
+	"bitbucket.com/olioapps/service-skeleton-go/olio/common/models"
 	"github.com/gin-gonic/gin"
-	"github.com/rachoac/service-skeleton-go/olio/common/models"
 	"golang.org/x/crypto/bcrypt"
 	jwt "gopkg.in/dgrijalva/jwt-go.v2"
 )
 
 func RequestToToken(c *gin.Context) *jwt.Token {
 	token, err := jwt.ParseFromRequest(c.Request, func(token *jwt.Token) (interface{}, error) {
-		signingKey := GetEnv("FAER_SIGNING_KEY", "secret")
+		signingKey := GetEnv("JWT_SIGNING_KEY", "secret")
 		return []byte(signingKey), nil
 	})
 	if token == nil || !token.Valid || err != nil {

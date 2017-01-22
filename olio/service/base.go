@@ -1,11 +1,12 @@
 package service
 
 import (
+	olioMiddleware "bitbucket.com/olioapps/service-skeleton-go/olio/service/middleware"
+	olioResources "bitbucket.com/olioapps/service-skeleton-go/olio/service/resources"
+	"bitbucket.com/olioapps/service-skeleton-go/olio/util"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	network "github.com/glibs/gin-webserver"
-	olioMiddleware "github.com/rachoac/service-skeleton-go/olio/service/middleware"
-	"github.com/rachoac/service-skeleton-go/olio/util"
 )
 
 type OlioDaemon interface {
@@ -42,6 +43,8 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 		obs.GinEngine.Use(middleware)
 	}
 
+	pingResource := olioResources.NewPingResource()
+	pingResource.Init(obs.GinEngine, whitelist)
 	for _, resource := range resources {
 		resource.Init(obs.GinEngine, whitelist)
 	}

@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
+	"bitbucket.com/olioapps/service-skeleton-go/olio/api"
+	"bitbucket.com/olioapps/service-skeleton-go/olio/util"
 	"github.com/gin-gonic/gin"
-	"github.com/rachoac/service-skeleton-go/olio/api"
-	"github.com/rachoac/service-skeleton-go/olio/util"
 )
 
 type BaseResource struct {

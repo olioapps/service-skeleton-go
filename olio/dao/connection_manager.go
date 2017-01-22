@@ -4,9 +4,9 @@ import (
 	"os"
 	"time"
 
+	"bitbucket.com/olioapps/service-skeleton-go/olio/util"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/rachoac/service-skeleton-go/olio/util"
 )
 
 type ConnectionProvider interface {

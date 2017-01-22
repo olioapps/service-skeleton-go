@@ -1,9 +1,9 @@
 package dao
 
 import (
+	"bitbucket.com/olioapps/service-skeleton-go/olio/common/filters"
+	"bitbucket.com/olioapps/service-skeleton-go/olio/common/models"
 	"github.com/jinzhu/gorm"
-	"github.com/rachoac/service-skeleton-go/olio/common/filters"
-	"github.com/rachoac/service-skeleton-go/olio/common/models"
 )
 
 type OlioDAO interface {
