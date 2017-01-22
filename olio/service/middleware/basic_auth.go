@@ -19,7 +19,7 @@ func NewOlioBasicAuthMiddleware(userExtractor UserExtractor) OlioBasicAuthMiddle
 	return middleware
 }
 
-func (m OlioBasicAuthMiddleware) CreateMiddleware() gin.HandlerFunc {
+func (m OlioBasicAuthMiddleware) Create() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		// if the user exists, continue
@@ -77,7 +77,6 @@ func (m OlioBasicAuthMiddleware) CreateMiddleware() gin.HandlerFunc {
 		username := string(creds[0])
 		password := string(creds[1])
 
-		// username is email
 		requestID, _ := c.Get("Request-Id")
 		user, err := m.userExtractor.ExtractUser(username, password, requestID.(string))
 

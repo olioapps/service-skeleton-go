@@ -21,7 +21,7 @@ func NewOlioJWTAuthMiddleware(userExtractor UserExtractor, tokenValidator api.To
 	return middleware
 }
 
-func (m OlioJWTAuthMiddleware) CreateMiddleware() gin.HandlerFunc {
+func (m OlioJWTAuthMiddleware) Create() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		// if the user exists, continue
