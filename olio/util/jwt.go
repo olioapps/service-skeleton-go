@@ -7,8 +7,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 
-	"bitbucket.com/olioapps/service-skeleton-go/olio/common/models"
 	"github.com/gin-gonic/gin"
+	"github.com/rachoac/service-skeleton-go/olio/common/models"
 	"golang.org/x/crypto/bcrypt"
 	jwt "gopkg.in/dgrijalva/jwt-go.v2"
 )

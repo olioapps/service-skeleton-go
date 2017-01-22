@@ -5,9 +5,9 @@ import (
 	"errors"
 	"strconv"
 
-	"bitbucket.com/olioapps/service-skeleton-go/olio/dao"
-	"bitbucket.com/olioapps/service-skeleton-go/olio/util"
 	log "github.com/Sirupsen/logrus"
+	"github.com/rachoac/service-skeleton-go/olio/dao"
+	"github.com/rachoac/service-skeleton-go/olio/util"
 )
 
 type MigrationManager struct {
