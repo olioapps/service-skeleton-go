@@ -12,10 +12,10 @@ import (
 
 type OlioJWTAuthMiddleware struct {
 	userExtractor  UserExtractor
-	tokenValidator api.TokenValidor
+	tokenValidator api.TokenValidator
 }
 
-func NewOlioJWTAuthMiddleware(userExtractor UserExtractor, tokenValidator api.TokenValidor) OlioJWTAuthMiddleware {
+func NewOlioJWTAuthMiddleware(userExtractor UserExtractor, tokenValidator api.TokenValidator) OlioJWTAuthMiddleware {
 	middleware := OlioJWTAuthMiddleware{userExtractor, tokenValidator}
 
 	return middleware

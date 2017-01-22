@@ -1,5 +1,5 @@
 package api
 
-type TokenValidor interface {
+type TokenValidator interface {
 	IsTokenBlacklisted(string) (bool, error)
 }
