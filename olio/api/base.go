@@ -9,10 +9,6 @@ import (
 	"github.com/rachoac/service-skeleton-go/olio/db"
 )
 
-type OlioCoreAPIType interface {
-	DoIt() string
-}
-
 type OlioBaseCoreAPI struct {
 	ConnectionManager *dao.ConnectionManager
 }
