@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"time"
 
+	"reflect"
+
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -72,4 +74,19 @@ func TrimInnerSpace(val string) string {
 	re2 := regexp.MustCompile("[\t]")
 
 	return re2.ReplaceAllString(re.ReplaceAllString(val, ""), " ")
+}
+
+func FirstOrNil(t interface{}) interface{} {
+	switch reflect.TypeOf(t).Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(t)
+
+		if s.Len() < 1 {
+			return nil
+		}
+
+		return s.Index(0).Interface()
+	}
+
+	return nil
 }
