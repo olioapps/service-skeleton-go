@@ -18,7 +18,7 @@ func NewPingResource() PingResource {
 func (resource PingResource) Init(r *gin.Engine, whiteList *middleware.WhiteList) {
 	log.Debug("Setting up ping resource.")
 
-	r.GET("/ping", resource.ping)
+	r.GET("/api/ping", resource.ping)
 }
 
 func (resource PingResource) ping(c *gin.Context) {
