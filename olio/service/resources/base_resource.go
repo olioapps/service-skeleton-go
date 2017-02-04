@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rachoac/service-skeleton-go/olio/api"
 	"github.com/rachoac/service-skeleton-go/olio/util"
+	"net/url"
 )
 
 type BaseResource struct {
@@ -132,4 +133,61 @@ func msToTime(ms string) (time.Time, error) {
 	}
 
 	return time.Unix(0, msInt*int64(time.Millisecond)), nil
+}
+
+func (self *BaseResource) SetPaginationHeaders(c *gin.Context, limit int64, offset int64, totalCount int64) {
+	c.Header("X-Total-Count", strconv.FormatInt(totalCount, 10))
+	setLinks(c, limit, offset, totalCount)
+}
+
+func (self *BaseResource) HasPaginationParams(c *gin.Context) bool {
+	return self.ParseString(c, "offset") != "" && self.ParseString(c, "limit") != ""
+}
+
+func GetBaseUrl(c *gin.Context) string {
+	var proto string
+
+	// assume if port is specified, request is not HTTPS, otherwise it is
+	if strings.Index(c.Request.Host, ":") > -1 {
+		proto = "http://"
+	} else {
+		proto = "https://"
+	}
+
+	return proto + c.Request.Host + c.Request.URL.String()
+}
+
+func setLinks(c *gin.Context, limit int64, offset int64, totalCount int64) {
+	baseUrl := GetBaseUrl(c)
+
+	lastOffset := totalCount - totalCount%limit
+	nextOffset := offset + limit
+	prevOffset := offset - limit
+
+	var links []string
+
+	if offset < lastOffset {
+		links = append(links, buildLink(baseUrl, "next", limit, nextOffset))
+		links = append(links, buildLink(baseUrl, "last", limit, lastOffset))
+	}
+
+	if offset > 1 {
+		links = append(links, buildLink(baseUrl, "first", limit, 0))
+		links = append(links, buildLink(baseUrl, "prev", limit, prevOffset))
+	}
+
+	linkStr := strings.Join(links, ", ")
+	c.Header("Link", linkStr)
+}
+
+func buildLink(baseUrl string, linkType string, limit, offset int64) string {
+	newUrl, _ := url.Parse(baseUrl)
+
+	query := newUrl.Query()
+	query.Set("limit", strconv.FormatInt(limit, 10))
+	query.Set("offset", strconv.FormatInt(offset, 10))
+	newUrl.RawQuery = query.Encode()
+
+	link := "<" + newUrl.String() + `>; rel="` + linkType + `"`
+	return link
 }
