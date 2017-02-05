@@ -23,37 +23,36 @@ func (e *Exception) Error() string {
 }
 
 func NewException(errorCode int, err string) *Exception {
-	obj := Exception{ErrorCode: errorCode, Err: err}
+	var toReport string = ""
+	if len(err) > 0 {
+		toReport = err[0]
+		log.Error(err)
+	}
 
+	obj := Exception{ErrorCode: errorCode, Err: toReport}
 	return &obj
 }
 
-func NewBadRequestException(err string) *Exception {
-	log.Error(err)
+func NewBadRequestException(err ... string) *Exception {
 	return NewException(BAD_REQUEST_EXCEPTION, err)
 }
 
-func NewUnauthorizedException(err string) *Exception {
-	log.Error(err)
+func NewUnauthorizedException(err ... string) *Exception {
 	return NewException(UNAUTHORIZED_EXCEPTION, err)
 }
 
-func NewForbiddenException(err string) *Exception {
-	log.Error(err)
+func NewForbiddenException(err ... string) *Exception {
 	return NewException(FORBIDDEN_EXCEPTION, err)
 }
 
-func NewConflictException(err string) *Exception {
-	log.Error(err)
+func NewConflictException(err ... string) *Exception {
 	return NewException(CONFLICT_EXCEPTION, err)
 }
 
-func NewNotFoundException(err string) *Exception {
-	log.Error(err)
+func NewNotFoundException(err ... string) *Exception {
 	return NewException(NOT_FOUND_EXCEPTION, err)
 }
 
-func NewRuntimeException(err string) *Exception {
-	log.Error(err)
+func NewRuntimeException(err ... string) *Exception {
 	return NewException(RUNTIME_EXCEPTION, err)
 }

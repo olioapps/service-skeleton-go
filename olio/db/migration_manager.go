@@ -40,9 +40,9 @@ func (self *MigrationManager) perequisites() error {
 		return db.Error
 	}
 
-	rows, error := db.Table("migrations").Select("version").Rows()
-	if error != nil {
-		return error
+	rows, err := db.Table("migrations").Select("version").Rows()
+	if err != nil {
+		return err
 	}
 	if rows == nil || rows.Err() == sql.ErrNoRows || !rows.Next() {
 		return db.Exec("INSERT INTO migrations values (?)", 0).Error

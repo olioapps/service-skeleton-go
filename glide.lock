@@ -5,4 +5,12 @@ imports:
   version: d9d5bc4eaa44be513329fcecee4c3f8529d632b6
 - name: gopkg.in/dgrijalva/jwt-go.v2
   version: 268038b363c7a8d7306b8e35bf77a1fde4b0c402
+- name: github.com/sendgrid/sendgrid-go
+  version: d88aa4dd8b2a9df3a9693d35d4d0f686b3bcff9a
+- name: github.com/sendgrid/smtpapi-go
+  version: b616837442153d876b2d0b84d09e5e48a2aa91ee
+- name: github.com/hectane/go-nonblockingchan
+  version: a5c3fb0f46b221ee575b2b7892a3ccf0557bcb5e
+- name: github.com/Sirupsen/logrus
+  version: 081307d9bc1364753142d5962fc1d795c742baaf
 devImports: []
