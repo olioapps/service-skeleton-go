@@ -28,6 +28,18 @@ func (self *BaseResource) ReturnJSON(c *gin.Context, status int, record interfac
 	}
 }
 
+func (self *BaseResource) ReturnCSVFile(c *gin.Context, status int, filename string, record string) {
+	w := c.Writer
+
+	w.WriteHeader(status)
+	w.Header().Set("Content-Type", "text/csv")
+
+
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Disposition", "attachment; filename=" + filename)
+	c.Data(status, "text/csv", []byte(record))
+}
+
 func (self *BaseResource) ReturnXML(c *gin.Context, status int, record interface{}) {
 	w := c.Writer
 
