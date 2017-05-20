@@ -46,7 +46,7 @@ func NewEmailAPI(templates []string) *EmailAPI {
 	}
 
 	// initialize templates
-	for template := range templates {
+	for _, template := range templates {
 		api.loadTemplate(template)
 	}
 
