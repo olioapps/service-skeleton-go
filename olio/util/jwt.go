@@ -122,3 +122,18 @@ func ValidatePassword(hashedPassword string, plainPassword string) error {
 	err := bcrypt.CompareHashAndPassword(fromDbBytes, dst)
 	return err
 }
+
+func FillClaimsFromPermission(claims map[string]interface{}, permissions []*models.Permission) {
+	var claimStr string = ""
+	for _, permission := range permissions {
+		if claimStr != "" {
+			claimStr += ","
+		}
+		claimStr = permission.Type + "|"
+		claimStr += permission.Operation + "|"
+		claimStr += permission.ObjectType + "|"
+		claimStr += permission.ObjectID
+	}
+
+	claims["permissions"] = claimStr
+}
