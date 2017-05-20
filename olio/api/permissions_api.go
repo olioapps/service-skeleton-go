@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/rachoac/service-skeleton-go/olio/common/models"
+	"github.com/rachoac/service-skeleton-go/olio/dao"
 )
 
 const PERMISSION_TYPE_INCLUDES string = "+"
@@ -17,7 +18,9 @@ const PERMISSION_OBJECT_TYPE_ALL string = "*"
 const PERMISSION_OBJECT_TYPE_PASSWORD string = "PASSWORD"
 const PERMISSION_OBJECT_TYPE_USER string = "USER"
 
-type PermissionsAPI struct {}
+type PermissionsAPI struct {
+	dao	*dao.PermissionsDAO
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // public
@@ -26,8 +29,10 @@ type PermissionsAPI struct {}
 //
 // Constructor
 //
-func NewPermissionsAPI() *PermissionsAPI {
-	api := PermissionsAPI{}
+func NewPermissionsAPI(dao *dao.PermissionsDAO) *PermissionsAPI {
+	api := PermissionsAPI{
+		dao,
+	}
 	return &api
 }
 
