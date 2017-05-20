@@ -23,5 +23,4 @@ func (api *OlioBaseCoreAPI) RunMigrations(migrations []db.Migration) {
 		log.Fatal("Failed to run migrations: ", err)
 		os.Exit(1)
 	}
-
 }

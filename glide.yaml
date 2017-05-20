@@ -2,4 +2,6 @@ package: ""
 import:
 - package: github.com/glibs/gin-webserver
 - package: gopkg.in/dgrijalva/jwt-go.v2
-
+- package: github.com/sendgrid/sendgrid-go
+- package: github.com/sendgrid/smtpapi-go
+- package: github.com/hectane/go-nonblockingchan
