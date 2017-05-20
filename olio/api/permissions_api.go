@@ -1,8 +1,10 @@
 package api
 
 import (
+	"time"
 	"github.com/rachoac/service-skeleton-go/olio/common/models"
 	"github.com/rachoac/service-skeleton-go/olio/dao"
+	"github.com/rachoac/service-skeleton-go/olio/common/filter"
 )
 
 const PERMISSION_TYPE_INCLUDES string = "+"
@@ -86,4 +88,35 @@ func (self *PermissionsAPI) Permitted(isSuperAccessUser bool, Permissions []*mod
 	}
 
 	return false
+}
+
+func (self *PermissionsAPI) BlacklistToken(accessContext *models.AccessContext, token string, expirationDate *time.Time) *Exception {
+	if !accessContext.SystemAccess {
+		return NewForbiddenException("Only system user can blacklist tokens")
+	}
+
+	accessToken := &models.AccessToken{
+		Token:          token,
+		ExpirationDate: expirationDate,
+	}
+
+	if err := self.dao.Insert(accessToken); err != nil {
+		return NewRuntimeException(err.Error())
+	}
+
+	return nil
+}
+
+func (self *PermissionsAPI) IsTokenBlacklisted(accessContext *models.AccessContext, token string) (bool, *Exception) {
+	if !accessContext.SystemAccess() {
+		return false, NewForbiddenException("Only system user can check token blacklist status")
+	}
+
+	tokenFilter := filters.AccessTokenFilter{Token: token}
+	results, err := self.dao.Find(&tokenFilter)
+	if err != nil {
+		return false, NewRuntimeException(err.Error())
+	}
+
+	return len(results) > 0, nil
 }
