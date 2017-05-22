@@ -22,6 +22,14 @@ type AccessToken struct {
 	ExpirationDate *time.Time `json:"expirationDate" jsonapi:"attr,expirationDate"`
 }
 
+func (self *AccessToken) GetID() string {
+	return self.ID
+}
+
+func (self *AccessToken) SetID(id string) {
+	self.ID = id
+}
+
 type UserAuth struct {
 	Username string `json:"username"`
 	Password string `json:"password"`

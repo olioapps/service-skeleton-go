@@ -90,11 +90,7 @@ func (self *PermissionsAPI) Permitted(isSuperAccessUser bool, Permissions []*mod
 	return false
 }
 
-func (self *PermissionsAPI) BlacklistToken(accessContext *models.AccessContext, token string, expirationDate *time.Time) *Exception {
-	if !accessContext.SystemAccess {
-		return NewForbiddenException("Only system user can blacklist tokens")
-	}
-
+func (self *PermissionsAPI) BlacklistToken(token string, expirationDate *time.Time) *Exception {
 	accessToken := &models.AccessToken{
 		Token:          token,
 		ExpirationDate: expirationDate,
@@ -107,11 +103,7 @@ func (self *PermissionsAPI) BlacklistToken(accessContext *models.AccessContext, 
 	return nil
 }
 
-func (self *PermissionsAPI) IsTokenBlacklisted(accessContext *models.AccessContext, token string) (bool, *Exception) {
-	if !accessContext.SystemAccess() {
-		return false, NewForbiddenException("Only system user can check token blacklist status")
-	}
-
+func (self *PermissionsAPI) IsTokenBlacklisted(token string) (bool, *Exception) {
 	tokenFilter := filters.AccessTokenFilter{Token: token}
 	results, err := self.dao.Find(&tokenFilter)
 	if err != nil {
