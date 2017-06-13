@@ -24,7 +24,7 @@ func (m OlioCORSMiddleware) Create() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Set-Request-Id, X-Client-Version-Number")
-		c.Writer.Header().Set("Access-Control-Expose-Headers", "Content-Length, X-Total-Count, Link")
+		c.Writer.Header().Set("Access-Control-Expose-Headers", "Content-Length, X-Total-Count, Link, X-Upgrade-Version")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
 		if c.Request.Method == "OPTIONS" {
