@@ -3,7 +3,7 @@ package dao
 import (
 	"github.com/jinzhu/gorm"
 	"errors"
-	"github.com/rachoac/service-skeleton-go/olio/util"
+	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type IDAware interface {

@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rachoac/service-skeleton-go/olio/api"
-	"github.com/rachoac/service-skeleton-go/olio/util"
+	"github.com/olioapps/service-skeleton-go/olio/api"
+	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type OlioJWTAuthMiddleware struct {

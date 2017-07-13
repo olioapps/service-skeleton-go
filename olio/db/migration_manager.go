@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/rachoac/service-skeleton-go/olio/dao"
-	"github.com/rachoac/service-skeleton-go/olio/util"
+	"github.com/olioapps/service-skeleton-go/olio/dao"
+	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type MigrationManager struct {

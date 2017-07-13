@@ -8,7 +8,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/hectane/go-nonblockingchan"
 	"github.com/sendgrid/sendgrid-go"
-	"github.com/rachoac/service-skeleton-go/olio/util"
+	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type EmailAPI struct {

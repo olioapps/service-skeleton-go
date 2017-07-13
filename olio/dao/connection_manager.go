@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/rachoac/service-skeleton-go/olio/util"
+	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type ConnectionProvider interface {

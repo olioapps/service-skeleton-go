@@ -2,9 +2,9 @@ package api
 
 import (
 	"time"
-	"github.com/rachoac/service-skeleton-go/olio/common/models"
-	"github.com/rachoac/service-skeleton-go/olio/dao"
-	"github.com/rachoac/service-skeleton-go/olio/common/filter"
+	"github.com/olioapps/service-skeleton-go/olio/common/models"
+	"github.com/olioapps/service-skeleton-go/olio/dao"
+	"github.com/olioapps/service-skeleton-go/olio/common/filter"
 )
 
 const PERMISSION_TYPE_INCLUDES string = "+"

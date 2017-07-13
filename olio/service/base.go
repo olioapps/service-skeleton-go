@@ -4,9 +4,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	network "github.com/glibs/gin-webserver"
-	olioMiddleware "github.com/rachoac/service-skeleton-go/olio/service/middleware"
-	olioResources "github.com/rachoac/service-skeleton-go/olio/service/resources"
-	"github.com/rachoac/service-skeleton-go/olio/util"
+	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
+	olioResources "github.com/olioapps/service-skeleton-go/olio/service/resources"
+	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type OlioDaemon interface {
