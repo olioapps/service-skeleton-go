@@ -31,7 +31,7 @@ func (self *AccessToken) SetID(id string) {
 }
 
 type UserAuth struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Device   string `json:"device"`
+	Username string `json:"username" jsonapi:"attr,username"`
+	Password string `json:"password" jsonapi:"attr,password"`
+	Device   string `json:"device" jsonapi:"attr,email"`
 }
