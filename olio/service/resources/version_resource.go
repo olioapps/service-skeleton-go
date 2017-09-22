@@ -34,7 +34,7 @@ func (resource VersionResource) getVersion() {
 	skeletonVersion := util.GetEnv("VERSION", "no version")
 	var appVersion string
 	if len(resource.versionExtractor) == 1 {
-		appVersion = m.versionExtractor[0].GetVersion()
+		appVersion = resource.versionExtractor[0].GetVersion()
 	} else {
 		appVersion = "no version given"
 	}
