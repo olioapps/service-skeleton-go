@@ -76,5 +76,5 @@ func (service *OlioBaseService) Stop() {
 
 func (service *OlioBaseService) AddVersionProvider(versionExtractor ...VersionExtractor) {
 	versionResource := olioResources.NewVersionResource(versionExtractor)
-	versionResource.Init(obs.GinEngine, whitelist)
+	versionResource.Init(obs.GinEngine)
 }

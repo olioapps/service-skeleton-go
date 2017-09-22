@@ -24,7 +24,7 @@ func NewVersionResource(versionExtractor ...VersionExtractor) VersionResource {
 	return obj
 }
 
-func (resource VersionResource) init(r *gin.Engine, whiteList *middleware.WhiteList) {
+func (resource VersionResource) init(r *gin.Engine) {
 	lob.Debug("Setting up version resource.")
 
 	r.GET("/api/version", resource.getVersion)
