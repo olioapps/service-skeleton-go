@@ -31,7 +31,7 @@ func New() *OlioBaseService {
 	return &service
 }
 
-func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middlewares []gin.HandlerFunc, resources []OlioResourceHandler) {
+func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middlewares []gin.HandlerFunc, resources []OlioResourceHandler, versionExtractor ...VersionExtractor) {
 	log.Info("Initializing RESTful service.")
 
 	log.Debug("Setting up middleware.")
@@ -41,6 +41,14 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 
 	for _, middleware := range middlewares {
 		obs.GinEngine.Use(middleware)
+	}
+
+	if (len(versionExtractor) == 1) {
+		versionResource := olioResources.NewVersionResource(versionExtractor)
+		versionResource.Init(obs.GinEngine)
+	} else {
+		versionResource := olioResources.NewVersionResource()
+		versionResource.
 	}
 
 	pingResource := olioResources.NewPingResource()
@@ -72,9 +80,4 @@ func (service *OlioBaseService) Stop() {
 		daemon.Stop()
 	}
 	service.server.Stop()
-}
-
-func (service *OlioBaseService) AddVersionProvider(versionExtractor ...VersionExtractor) {
-	versionResource := olioResources.NewVersionResource(versionExtractor)
-	versionResource.Init(obs.GinEngine)
 }
