@@ -10,7 +10,7 @@ type Version struct {
 	appVersion      string `json:"appVersion"`
 }
 
-type VersionExtractor insterface {
+type VersionExtractor interface {
 	GetVersion()
 }
 
@@ -18,10 +18,14 @@ type VersionResource struct {
 	versionExtractor VersionExtractor
 }
 
-func NewVersionResource(versionExtractor ...VersionExtractor) VersionResource {
-	obj := VersionResource{versionExtractor}
+func NewVersionResource() VersionResource {
+	obj := VersionResource{}
 
 	return obj
+}
+
+func (resource VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
+	resource.versionExtractor = versionExtractor
 }
 
 func (resource VersionResource) init(r *gin.Engine) {
@@ -31,10 +35,10 @@ func (resource VersionResource) init(r *gin.Engine) {
 }
 
 func (resource VersionResource) getVersion() {
-	skeletonVersion := util.GetEnv("VERSION", "no version")
+	skeletonVersion := VERSION
 	var appVersion string
-	if len(resource.versionExtractor) == 1 {
-		appVersion = resource.versionExtractor[0].GetVersion()
+	if resource.versionExtractor {
+		appVersion = resource.versionExtractor.GetVersion()
 	} else {
 		appVersion = "no version given"
 	}

@@ -9,6 +9,8 @@ import (
 	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
+const VERSION = "0.0.1"
+
 type OlioDaemon interface {
 	Start()
 	Stop()
@@ -19,9 +21,10 @@ type OlioResourceHandler interface {
 }
 
 type OlioBaseService struct {
-	GinEngine *gin.Engine
-	server    *network.WebServer
-	daemons   []OlioDaemon
+	GinEngine     *gin.Engine
+	server        *network.WebServer
+	daemons       []OlioDaemon
+	coreResources map[string]OlioResourceHandler
 }
 
 func New() *OlioBaseService {
@@ -31,7 +34,7 @@ func New() *OlioBaseService {
 	return &service
 }
 
-func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middlewares []gin.HandlerFunc, resources []OlioResourceHandler, versionExtractor ...VersionExtractor) {
+func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middlewares []gin.HandlerFunc, resources []OlioResourceHandler) {
 	log.Info("Initializing RESTful service.")
 
 	log.Debug("Setting up middleware.")
@@ -43,13 +46,9 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 		obs.GinEngine.Use(middleware)
 	}
 
-	if (len(versionExtractor) == 1) {
-		versionResource := olioResources.NewVersionResource(versionExtractor)
-		versionResource.Init(obs.GinEngine)
-	} else {
-		versionResource := olioResources.NewVersionResource()
-		versionResource.
-	}
+	versionResource := olioResources.NewVersionResource()
+	obs.coreResources["version"] = versionResource
+	versionResource.Init(obs.GinEngine)
 
 	pingResource := olioResources.NewPingResource()
 	pingResource.Init(obs.GinEngine, whitelist)
@@ -60,11 +59,18 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 	log.Debug("Setting up routes.")
 }
 
-func (service *OlioBaseService) AddDaemon(daemon OlioDaemon) {
+func (obs *OlioBaseService) AddDaemon(daemon OlioDaemon) {
 	service.daemons = append(service.daemons, daemon)
 }
 
-func (service *OlioBaseService) Start() {
+func (obs *OlioBaseService) AddVersionProvider(versionExtractor VersionExtractor) {
+	versionResource := obs.coreResources["version"]
+	if versionResource != nil {
+		versionResource.AddVersionExtractor(versionExtractor)
+	}
+}
+
+func (obs *OlioBaseService) Start() {
 	for _, daemon := range service.daemons {
 		daemon.Start()
 	}
@@ -75,7 +81,7 @@ func (service *OlioBaseService) Start() {
 	service.server.Start()
 }
 
-func (service *OlioBaseService) Stop() {
+func (obs *OlioBaseService) Stop() {
 	for _, daemon := range service.daemons {
 		daemon.Stop()
 	}
