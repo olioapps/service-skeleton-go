@@ -28,6 +28,7 @@ type OlioBaseService struct {
 func New() *OlioBaseService {
 	service := OlioBaseService{}
 	service.GinEngine = gin.Default()
+	service.coreResources = make(map[string]*olioResources.VersionResource)
 
 	return &service
 }
