@@ -30,7 +30,7 @@ func (resource VersionResource) AddVersionExtractor(versionExtractor VersionExtr
 	resource.versionExtractor = versionExtractor
 }
 
-func (resource VersionResource) init(r *gin.Engine) {
+func (resource VersionResource) Init(r *gin.Engine) {
 	log.Debug("Setting up version resource.")
 
 	r.GET("/api/version", resource.getVersion)

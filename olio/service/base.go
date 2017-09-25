@@ -7,7 +7,6 @@ import (
 	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
 	olioResources "github.com/olioapps/service-skeleton-go/olio/service/resources"
 	"github.com/olioapps/service-skeleton-go/olio/util"
-	"github.com/rachoac/service-skeleton-go/olio/service/resources"
 )
 
 type OlioDaemon interface {
@@ -23,7 +22,7 @@ type OlioBaseService struct {
 	GinEngine     *gin.Engine
 	server        *network.WebServer
 	daemons       []OlioDaemon
-	coreResources map[string]*resources.VersionResource
+	coreResources map[string]*olioResources.VersionResource
 }
 
 func New() *OlioBaseService {
@@ -62,7 +61,7 @@ func (obs *OlioBaseService) AddDaemon(daemon OlioDaemon) {
 	obs.daemons = append(obs.daemons, daemon)
 }
 
-func (obs *OlioBaseService) AddVersionProvider(versionExtractor resources.VersionExtractor) {
+func (obs *OlioBaseService) AddVersionProvider(versionExtractor olioResources.VersionExtractor) {
 	versionResource := obs.coreResources["version"]
 	if versionResource != nil {
 		versionResource.AddVersionExtractor(versionExtractor)
