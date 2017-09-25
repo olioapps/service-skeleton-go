@@ -1,13 +1,16 @@
 package resources
 
 import (
+	"encoding/json"
+	"net/http"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
 type Version struct {
-	skeletonVersion string `json:"skeletonVersion"`
-	appVersion      string `json:"appVersion"`
+	SkeletonVersion string `json:"skeletonVersion"`
+	AppVersion      string `json:"appVersion"`
 }
 
 type VersionExtractor interface {
@@ -46,12 +49,19 @@ func (resource VersionResource) getVersion(c *gin.Context) {
 	}
 
 	version := Version{
-		appVersion:      appVersion,
-		skeletonVersion: skeletonVersion,
+		AppVersion:      appVersion,
+		SkeletonVersion: skeletonVersion,
 	}
 
 	w := c.Writer
 	w.WriteHeader(200)
 	w.Header().Set("Content-Type", "application/json")
-	c.IndentedJSON(200, version)
+
+	js, err := json.Marshal(version)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(js)
 }
