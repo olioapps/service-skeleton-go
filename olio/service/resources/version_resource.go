@@ -1,6 +1,7 @@
 package resources
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,7 +11,7 @@ type Version struct {
 }
 
 type VersionExtractor interface {
-	GetVersion()
+	GetVersion() string
 }
 
 type VersionResource struct {
@@ -30,24 +31,27 @@ func (resource VersionResource) AddVersionExtractor(versionExtractor VersionExtr
 }
 
 func (resource VersionResource) init(r *gin.Engine) {
-	lob.Debug("Setting up version resource.")
+	log.Debug("Setting up version resource.")
 
 	r.GET("/api/version", resource.getVersion)
 }
 
-func (resource VersionResource) getVersion() {
+func (resource VersionResource) getVersion(c *gin.Context) {
 	skeletonVersion := VERSION
 	var appVersion string
-	if resource.versionExtractor {
+	if resource.versionExtractor != nil {
 		appVersion = resource.versionExtractor.GetVersion()
 	} else {
 		appVersion = "no version given"
 	}
 
 	version := Version{
-		appVersion: appVersion,
-		skeletonVersion: skeletonVersion
+		appVersion:      appVersion,
+		skeletonVersion: skeletonVersion,
 	}
 
-	resource.ReturnJSON(c, 200, version)
+	w := c.Writer
+	w.WriteHeader(200)
+	w.Header().Set("Content-Type", "application/json")
+	c.IndentedJSON(200, version)
 }
