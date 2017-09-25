@@ -9,8 +9,6 @@ import (
 	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
-const VERSION = "0.0.1"
-
 type OlioDaemon interface {
 	Start()
 	Stop()

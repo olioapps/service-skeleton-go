@@ -2,7 +2,6 @@ package resources
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thedataguild/faer/service/middleware"
 )
 
 type Version struct {
@@ -17,6 +16,8 @@ type VersionExtractor interface {
 type VersionResource struct {
 	versionExtractor VersionExtractor
 }
+
+const VERSION = "0.0.1"
 
 func NewVersionResource() VersionResource {
 	obj := VersionResource{}
