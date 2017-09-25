@@ -7,6 +7,7 @@ import (
 	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
 	olioResources "github.com/olioapps/service-skeleton-go/olio/service/resources"
 	"github.com/olioapps/service-skeleton-go/olio/util"
+	"github.com/rachoac/service-skeleton-go/olio/service/resources"
 )
 
 type OlioDaemon interface {
@@ -22,7 +23,7 @@ type OlioBaseService struct {
 	GinEngine     *gin.Engine
 	server        *network.WebServer
 	daemons       []OlioDaemon
-	coreResources map[string]OlioResourceHandler
+	coreResources map[string]*resources.VersionResource
 }
 
 func New() *OlioBaseService {
@@ -45,7 +46,7 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 	}
 
 	versionResource := olioResources.NewVersionResource()
-	obs.coreResources["version"] = versionResource
+	obs.coreResources["version"] = &versionResource
 	versionResource.Init(obs.GinEngine)
 
 	pingResource := olioResources.NewPingResource()
@@ -58,10 +59,10 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 }
 
 func (obs *OlioBaseService) AddDaemon(daemon OlioDaemon) {
-	service.daemons = append(service.daemons, daemon)
+	obs.daemons = append(obs.daemons, daemon)
 }
 
-func (obs *OlioBaseService) AddVersionProvider(versionExtractor VersionExtractor) {
+func (obs *OlioBaseService) AddVersionProvider(versionExtractor resources.VersionExtractor) {
 	versionResource := obs.coreResources["version"]
 	if versionResource != nil {
 		versionResource.AddVersionExtractor(versionExtractor)
@@ -69,19 +70,19 @@ func (obs *OlioBaseService) AddVersionProvider(versionExtractor VersionExtractor
 }
 
 func (obs *OlioBaseService) Start() {
-	for _, daemon := range service.daemons {
+	for _, daemon := range obs.daemons {
 		daemon.Start()
 	}
 
 	servicePort := util.GetEnv("SERVICE_PORT", "9090")
 	host := ":" + servicePort
-	service.server = network.InitializeWebServer(service.GinEngine, host)
-	service.server.Start()
+	obs.server = network.InitializeWebServer(obs.GinEngine, host)
+	obs.server.Start()
 }
 
 func (obs *OlioBaseService) Stop() {
-	for _, daemon := range service.daemons {
+	for _, daemon := range obs.daemons {
 		daemon.Stop()
 	}
-	service.server.Stop()
+	obs.server.Stop()
 }
