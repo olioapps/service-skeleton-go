@@ -29,17 +29,17 @@ func NewVersionResource() VersionResource {
 	return obj
 }
 
-func (resource VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
+func (resource *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
 	resource.versionExtractor = versionExtractor
 }
 
-func (resource VersionResource) Init(r *gin.Engine) {
+func (resource *VersionResource) Init(r *gin.Engine) {
 	log.Debug("Setting up version resource.")
 
 	r.GET("/api/version", resource.getVersion)
 }
 
-func (resource VersionResource) getVersion(c *gin.Context) {
+func (resource *VersionResource) getVersion(c *gin.Context) {
 	skeletonVersion := VERSION
 	var appVersion string
 	if resource.versionExtractor != nil {
