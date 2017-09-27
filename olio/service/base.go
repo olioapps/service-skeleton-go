@@ -74,7 +74,7 @@ func (obs *OlioBaseService) Start() {
 		daemon.Start()
 	}
 
-	servicePort := util.GetEnv("SERVICE_PORT", "9090")
+	servicePort := util.GetEnv("PORT", "9090")
 	host := ":" + servicePort
 	obs.server = network.InitializeWebServer(obs.GinEngine, host)
 	obs.server.Start()
