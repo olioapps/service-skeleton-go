@@ -35,7 +35,7 @@ func (self *MigrationManager) perequisites() error {
 		CREATE TABLE IF NOT EXISTS
 		migrations (
 			version int
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+		)
 	`).Error != nil {
 		return db.Error
 	}
