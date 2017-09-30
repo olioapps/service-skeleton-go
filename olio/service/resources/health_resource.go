@@ -5,15 +5,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Motiva-AI/cx-messaging/api"
 	"github.com/gin-gonic/gin"
 	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
 	"github.com/siddontang/go/log"
 )
 
 type HealthResource struct {
-	BaseResource
-	coreAPI *api.CoreAPI
 }
 
 type Health struct {
@@ -22,9 +19,8 @@ type Health struct {
 	dataStorePingSuccess bool
 }
 
-func NewHealthResource(coreAPI *api.CoreAPI) *HealthResource {
+func NewHealthResource() *HealthResource {
 	obj := HealthResource{}
-	obj.coreAPI = coreAPI
 	return &obj
 }
 

@@ -45,6 +45,9 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 		obs.GinEngine.Use(middleware)
 	}
 
+	healthResource := olioResources.NewHealthResource()
+	healthResource.Init(obs.GinEngine, whitelist)
+
 	versionResource := olioResources.NewVersionResource()
 	obs.coreResources["version"] = &versionResource
 	versionResource.Init(obs.GinEngine)
