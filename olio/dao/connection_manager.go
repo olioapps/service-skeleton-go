@@ -4,9 +4,12 @@ import (
 	"os"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+
 	"github.com/jinzhu/gorm"
 	"github.com/olioapps/service-skeleton-go/olio/util"
+	log "github.com/Sirupsen/logrus"
 )
 
 type ConnectionProvider interface {
@@ -52,6 +55,8 @@ func NewConnectionManager() *ConnectionManager {
 
 	dbConnectionString := util.GetEnv("DB_CONNECTION_STRING", "root:root@/todo?parseTime=true")
 	dialect := util.GetEnv("DB_CONNECTION_DIALECT", "mysql")
+
+	log.Info("Connecting to [", dbConnectionString, "], a [", dialect, "] database")
 	connectionManager.db = connectionManager.createDb(dialect, dbConnectionString)
 
 	return &connectionManager
