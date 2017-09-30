@@ -13,6 +13,7 @@ import (
 type HealthResource struct {
 }
 
+// should go in models
 type Health struct {
 	pingSuccess          bool
 	uptime               time.Time
@@ -37,7 +38,7 @@ func (hr HealthResource) getHealth(c *gin.Context) {
 	w.WriteHeader(200)
 	w.Header().Set("Content-Type", "application/json")
 
-	resp, err := http.Get("https://cx-messaging.herokuapp.com/api/ping")
+	resp, err := http.Get("http://localhost:9090/api/ping")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -46,6 +47,7 @@ func (hr HealthResource) getHealth(c *gin.Context) {
 	respBodyText, _ := ioutil.ReadAll(resp.Body)
 	if string(respBodyText) == "pong" {
 		c.Writer.WriteString("success")
+		return
 	}
 
 	c.Writer.WriteString("fail")
