@@ -7,3 +7,4 @@ import:
 - package: github.com/hectane/go-nonblockingchan
 - package: github.com/jinzhu/gorm/dialects/mysql
 - package: github.com/jinzhu/gorm/dialects/postgres
+- package: github.com/shwoodard/jsonapi

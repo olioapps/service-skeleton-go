@@ -1,6 +1,7 @@
 package resources
 
 import (
+	"errors"
 	"encoding/xml"
 	"fmt"
 	"strconv"
@@ -11,6 +12,7 @@ import (
 	"github.com/olioapps/service-skeleton-go/olio/api"
 	"github.com/olioapps/service-skeleton-go/olio/util"
 	"net/url"
+	"github.com/shwoodard/jsonapi"
 )
 
 type BaseResource struct {
@@ -28,16 +30,34 @@ func (self *BaseResource) ReturnJSON(c *gin.Context, status int, record interfac
 	}
 }
 
-func (self *BaseResource) ReturnCSVFile(c *gin.Context, status int, filename string, record string) {
+func (self *BaseResource) ReturnJSONAPI(c *gin.Context, status int, record interface{}) {
 	w := c.Writer
 
 	w.WriteHeader(status)
-	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Type", "application/json")
 
+	if record != nil {
+		if err := jsonapi.MarshalOnePayload(w, record); err != nil {
+			self.ReturnJSONException(c, api.NewRuntimeException(err.Error()))
+		}
+	}
+}
 
-	c.Header("Content-Description", "File Transfer")
-	c.Header("Content-Disposition", "attachment; filename=" + filename)
-	c.Data(status, "text/csv", []byte(record))
+func (self *BaseResource) ReturnJSONAPIArray(c *gin.Context, status int, records []interface{}) {
+	w := c.Writer
+
+	w.WriteHeader(status)
+	w.Header().Set("Content-Type", "application/json")
+
+	if len(records) < 1 {
+		c.JSON(status, jsonapi.ManyPayload{
+			Data: []*jsonapi.Node{},
+		})
+	} else {
+		if err := jsonapi.MarshalManyPayload(w, records); err != nil {
+			self.ReturnJSONException(c, api.NewRuntimeException(err.Error()))
+		}
+	}
 }
 
 func (self *BaseResource) ReturnXML(c *gin.Context, status int, record interface{}) {
@@ -136,6 +156,22 @@ func (self *BaseResource) ParseArray(c *gin.Context, paramName string) []string 
 		return nil
 	}
 	return strings.Split(param, ",")
+}
+
+func (self *BaseResource) ParseJsonapi(c *gin.Context, record interface{}) error {
+	if err := jsonapi.UnmarshalPayload(c.Request.Body, record); err != nil {
+		return errors.New("Problem unmarshalling incoming payload [" + err.Error() + "]")
+	}
+
+	return nil
+}
+
+func (self *BaseResource) ParseJson(c *gin.Context, record interface{}) error {
+	if err := c.BindJSON(&record); err != nil {
+		return errors.New("Problem unmarshalling incoming payload [" + err.Error() + "]")
+	}
+
+	return nil
 }
 
 func msToTime(ms string) (time.Time, error) {

@@ -16,4 +16,6 @@ imports:
   subpackages:
   - dialects/mysql
   - dialects/postgres
+- name: github.com/shwoodard/jsonapi
+  version: a337a3bc9f0a02cb5d289564e5c97c65e46efc42
 devImports: []
