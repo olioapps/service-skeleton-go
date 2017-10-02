@@ -1,7 +1,7 @@
 package resources
 
 import (
-	"io/ioutil"
+	"encoding/json"
 	"net/http"
 	"time"
 
@@ -11,13 +11,17 @@ import (
 )
 
 type HealthResource struct {
+	uptimeExtractor UptimeExtractor
+}
+
+type UptimeExtractor interface {
+	GetUptime() *time.Duration
 }
 
 // should go in models
 type Health struct {
-	pingSuccess          bool
-	uptime               time.Time
-	dataStorePingSuccess bool
+	Uptime *time.Duration `json:"uptime"`
+	// DataStorePingSuccess bool          `json:"dataStorePingSuccess"`
 }
 
 func NewHealthResource() *HealthResource {
@@ -31,24 +35,32 @@ func (hr HealthResource) Init(e *gin.Engine, whiteList *olioMiddleware.WhiteList
 	e.GET("/api/health", hr.getHealth)
 }
 
+func (hr *HealthResource) AddVersionExtractor(uptimeExtractor UptimeExtractor) {
+	hr.uptimeExtractor = uptimeExtractor
+}
+
 func (hr HealthResource) getHealth(c *gin.Context) {
-	// var pingSuccess bool
+	var uptime *time.Duration
+	if hr.uptimeExtractor != nil {
+		uptime = hr.uptimeExtractor.GetUptime()
+	} else {
+		uptime = nil
+	}
+
+	health := Health{
+		Uptime: uptime,
+	}
 
 	w := c.Writer
 	w.WriteHeader(200)
 	w.Header().Set("Content-Type", "application/json")
 
-	resp, err := http.Get("http://localhost:9090/api/ping")
+	js, err := json.Marshal(health)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	respBodyText, _ := ioutil.ReadAll(resp.Body)
-	if string(respBodyText) == "pong" {
-		c.Writer.WriteString("success")
-		return
-	}
+	w.Write(js)
 
-	c.Writer.WriteString("fail")
 }
