@@ -6,12 +6,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/olioapps/service-skeleton-go/olio/models"
 )
-
-type Version struct {
-	SkeletonVersion string `json:"skeletonVersion"`
-	AppVersion      string `json:"appVersion"`
-}
 
 type VersionExtractor interface {
 	GetVersion() string
@@ -48,7 +44,7 @@ func (resource *VersionResource) getVersion(c *gin.Context) {
 		appVersion = "no version given"
 	}
 
-	version := Version{
+	version := models.Version{
 		AppVersion:      appVersion,
 		SkeletonVersion: skeletonVersion,
 	}

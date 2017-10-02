@@ -2,10 +2,12 @@ package resources
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/olioapps/service-skeleton-go/olio/models"
 	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
 	"github.com/siddontang/go/log"
 )
@@ -16,12 +18,6 @@ type HealthResource struct {
 
 type UptimeExtractor interface {
 	GetUptime() time.Duration
-}
-
-// should go in models
-type Health struct {
-	Uptime time.Duration `json:"uptime"`
-	// DataStorePingSuccess bool          `json:"dataStorePingSuccess"`
 }
 
 func NewHealthResource() *HealthResource {
@@ -40,12 +36,14 @@ func (hr *HealthResource) AddUptimeExtractor(uptimeExtractor UptimeExtractor) {
 }
 
 func (hr *HealthResource) getHealth(c *gin.Context) {
-	var uptime time.Duration
+	var uptime string
 	if hr.uptimeExtractor != nil {
-		uptime = hr.uptimeExtractor.GetUptime()
+		tmp := int(hr.uptimeExtractor.GetUptime())
+
+		uptime = fmt.Sprintf("%.3f", float64(tmp)/(1000*60*60)) + " hours"
 	}
 
-	health := Health{
+	health := models.Health{
 		Uptime: uptime,
 	}
 
