@@ -11,13 +11,14 @@ import (
 
 type VersionExtractor interface {
 	GetVersion() string
+	GetAppName() string
 }
 
 type VersionResource struct {
 	versionExtractor VersionExtractor
 }
 
-const VERSION = "0.0.1"
+const VERSION = "1.0.2"
 
 func NewVersionResource() *VersionResource {
 	obj := VersionResource{}
@@ -39,7 +40,7 @@ func (resource *VersionResource) getVersion(c *gin.Context) {
 	skeletonVersion := VERSION
 	var appVersion string
 	if resource.versionExtractor != nil {
-		appVersion = resource.versionExtractor.GetVersion()
+		appVersion = resource.versionExtractor.GetAppName() + "-" + resource.versionExtractor.GetVersion()
 	} else {
 		appVersion = "no version given"
 	}

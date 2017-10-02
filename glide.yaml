@@ -5,3 +5,6 @@ import:
 - package: github.com/sendgrid/sendgrid-go
 - package: github.com/sendgrid/smtpapi-go
 - package: github.com/hectane/go-nonblockingchan
+- package: github.com/jinzhu/gorm/dialects/mysql
+- package: github.com/jinzhu/gorm/dialects/postgres
+- package: github.com/shwoodard/jsonapi

@@ -63,7 +63,6 @@ func (m OlioJWTAuthMiddleware) Create() gin.HandlerFunc {
 
 		c.Set("JWT_TOKEN", token.Raw)
 		var f map[string]interface{} = token.Claims
-
 		username, ok := f["subject"].(string)
 		if ok {
 			requestID, _ := c.Get("Request-Id")

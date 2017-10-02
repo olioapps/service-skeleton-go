@@ -9,8 +9,9 @@ import (
 )
 
 type HttpClient struct {
-	BaseURL string
-	JWT     string
+	BaseURL    string
+	AuthToken  string
+	AuthScheme string
 }
 
 func NewHttpClient(baseURL string) *HttpClient {
@@ -21,22 +22,22 @@ func NewHttpClient(baseURL string) *HttpClient {
 }
 
 func (client *HttpClient) Post(uri string, bodyStr string) (*http.Response, string, error) {
-	return client.requestWithBody("POST", uri, bodyStr, client.JWT)
+	return client.requestWithBody("POST", uri, bodyStr, client.AuthToken)
 }
 
 func (client *HttpClient) Put(uri string, bodyStr string) (*http.Response, string, error) {
-	return client.requestWithBody("PUT", uri, bodyStr, client.JWT)
+	return client.requestWithBody("PUT", uri, bodyStr, client.AuthToken)
 }
 
 func (client *HttpClient) Get(uri string) (*http.Response, string, error)  {
-	return client.requestNoBody("GET", uri, client.JWT)
+	return client.requestNoBody("GET", uri, client.AuthToken)
 }
 
 func (client *HttpClient) Delete(uri string) (*http.Response, string, error) {
-	return client.requestNoBody("DELETE", uri, client.JWT)
+	return client.requestNoBody("DELETE", uri, client.AuthToken)
 }
 
-func (client *HttpClient) requestWithBody(verb string, uri string, bodyStr string, jwt string) (*http.Response, string, error) {
+func (client *HttpClient) requestWithBody(verb string, uri string, bodyStr string, authToken string) (*http.Response, string, error) {
 	url := client.BaseURL + uri
 	fmt.Println(verb, url)
 
@@ -48,8 +49,12 @@ func (client *HttpClient) requestWithBody(verb string, uri string, bodyStr strin
 	}
 
 	req, err := http.NewRequest(verb, url, body)
-	if jwt != "" {
-		req.Header.Set("Authorization", "Bearer "+jwt)
+	var authScheme = client.AuthScheme
+	if authScheme == "" {
+		authScheme = "Basic"
+	}
+	if authToken != "" {
+		req.Header.Set("Authorization", authScheme + " " + authToken)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
@@ -64,6 +69,6 @@ func (client *HttpClient) requestWithBody(verb string, uri string, bodyStr strin
 	return resp, string(responseBody), nil
 }
 
-func (client *HttpClient) requestNoBody(verb string, uri string, jwt string) (*http.Response, string, error) {
-	return client.requestWithBody(verb, uri, "", jwt)
+func (client *HttpClient) requestNoBody(verb string, uri string, authToken string) (*http.Response, string, error) {
+	return client.requestWithBody(verb, uri, "", authToken)
 }

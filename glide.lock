@@ -11,4 +11,11 @@ imports:
   version: b616837442153d876b2d0b84d09e5e48a2aa91ee
 - name: github.com/hectane/go-nonblockingchan
   version: a5c3fb0f46b221ee575b2b7892a3ccf0557bcb5e
+- name: github.com/jinzhu/gorm
+  version: 3a9e91ab372120a0e35b518430255308e3d8d5ea
+  subpackages:
+  - dialects/mysql
+  - dialects/postgres
+- name: github.com/shwoodard/jsonapi
+  version: a337a3bc9f0a02cb5d289564e5c97c65e46efc42
 devImports: []
