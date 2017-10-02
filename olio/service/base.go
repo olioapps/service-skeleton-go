@@ -19,16 +19,18 @@ type OlioResourceHandler interface {
 }
 
 type OlioBaseService struct {
-	GinEngine     *gin.Engine
-	server        *network.WebServer
-	daemons       []OlioDaemon
-	coreResources map[string]*olioResources.VersionResource
+	GinEngine       *gin.Engine
+	server          *network.WebServer
+	daemons         []OlioDaemon
+	versionResource map[string]*olioResources.VersionResource
+	healthResource  map[string]*olioResources.HealthResource
 }
 
 func New() *OlioBaseService {
 	service := OlioBaseService{}
 	service.GinEngine = gin.Default()
-	service.coreResources = make(map[string]*olioResources.VersionResource)
+	service.versionResource = make(map[string]*olioResources.VersionResource)
+	service.healthResource = make(map[string]*olioResources.HealthResource)
 
 	return &service
 }
@@ -46,10 +48,11 @@ func (obs *OlioBaseService) Init(whitelist *olioMiddleware.WhiteList, middleware
 	}
 
 	healthResource := olioResources.NewHealthResource()
+	obs.healthResource["health"] = healthResource
 	healthResource.Init(obs.GinEngine, whitelist)
 
 	versionResource := olioResources.NewVersionResource()
-	obs.coreResources["version"] = &versionResource
+	obs.versionResource["version"] = versionResource
 	versionResource.Init(obs.GinEngine)
 
 	pingResource := olioResources.NewPingResource()
@@ -66,9 +69,16 @@ func (obs *OlioBaseService) AddDaemon(daemon OlioDaemon) {
 }
 
 func (obs *OlioBaseService) AddVersionProvider(versionExtractor olioResources.VersionExtractor) {
-	versionResource := obs.coreResources["version"]
+	versionResource := obs.versionResource["version"]
 	if versionResource != nil {
 		versionResource.AddVersionExtractor(versionExtractor)
+	}
+}
+
+func (obs *OlioBaseService) AddUptimeProvider(uptimeExtractor olioResources.UptimeExtractor) {
+	healthResource := obs.healthResource["health"]
+	if healthResource != nil {
+		healthResource.AddUptimeExtractor(uptimeExtractor)
 	}
 }
 

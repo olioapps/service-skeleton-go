@@ -23,10 +23,10 @@ type VersionResource struct {
 
 const VERSION = "0.0.1"
 
-func NewVersionResource() VersionResource {
+func NewVersionResource() *VersionResource {
 	obj := VersionResource{}
 
-	return obj
+	return &obj
 }
 
 func (resource *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
