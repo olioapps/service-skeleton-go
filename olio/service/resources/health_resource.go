@@ -39,7 +39,6 @@ func (hr *HealthResource) getHealth(c *gin.Context) {
 	var uptime string
 	if hr.uptimeExtractor != nil {
 		tmp := int(hr.uptimeExtractor.GetUptime())
-
 		uptime = fmt.Sprintf("%.3f", float64(tmp)/(1000*60*60)) + " hours"
 	}
 
