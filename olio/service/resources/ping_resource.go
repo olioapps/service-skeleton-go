@@ -1,7 +1,7 @@
 package resources
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/olioapps/service-skeleton-go/olio/service/middleware"
 )

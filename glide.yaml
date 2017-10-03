@@ -1,5 +1,8 @@
 package: ""
 import:
+- package: github.com/golang/protobuf/proto
+- package: github.com/go-sql-driver/mysql
+- package: github.com/gin-gonic/gin
 - package: github.com/glibs/gin-webserver
 - package: gopkg.in/dgrijalva/jwt-go.v2
 - package: github.com/sendgrid/sendgrid-go
@@ -8,3 +11,16 @@ import:
 - package: github.com/jinzhu/gorm/dialects/mysql
 - package: github.com/jinzhu/gorm/dialects/postgres
 - package: github.com/shwoodard/jsonapi
+- package: github.com/jinzhu/inflection
+- package: github.com/lib/pq
+- package: github.com/lib/pq/hstore
+- package: github.com/manucorporat/sse
+- package: github.com/mattn/go-isatty
+- package: github.com/sirupsen/logrus
+- package: golang.org/x/crypto/bcrypt
+- package: golang.org/x/net/context
+- package: gopkg.in/go-playground/validator.v8
+- package: gopkg.in/mgo.v2/bson
+- package: gopkg.in/yaml.v2
+- package: github.com/pborman/uuid
+- package: github.com/stretchr/testify/assert

@@ -5,7 +5,7 @@ package api
 // 	"errors"
 // 	"html/template"
 
-// 	log "github.com/Sirupsen/logrus"
+// 	log "github.com/sirupsen/logrus"
 // 	"github.com/hectane/go-nonblockingchan"
 // 	"github.com/sendgrid/sendgrid-go"
 // 	"github.com/olioapps/service-skeleton-go/olio/util"

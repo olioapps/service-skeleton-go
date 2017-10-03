@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/olioapps/service-skeleton-go/olio/models"
-	"github.com/siddontang/go/log"
+	log "github.com/sirupsen/logrus"
 )
 
 type HealthResource struct {

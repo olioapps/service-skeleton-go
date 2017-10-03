@@ -9,7 +9,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/olioapps/service-skeleton-go/olio/util"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 type ConnectionProvider interface {

@@ -1,0 +1,45 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/olioapps/service-skeleton-go
+    docker:
+      - image: circleci/golang:1.9
+        environment:
+          TEST_RESULTS: test_results
+      - image: circleci/postgres:9.4.12-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
+    steps:
+      - checkout
+      - run: mkdir -p $TEST_RESULTS
+      - run: go get github.com/jstemmer/go-junit-report
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+      - run:
+          name: get dependecies
+          # command: |
+          #   go get -u github.com/golang/dep/cmd/dep
+          #   dep ensure
+          command: |
+            wget https://github.com/Masterminds/glide/releases/download/0.9.3/glide-0.9.3-linux-amd64.tar.gz
+            tar zxvf glide-0.9.3-linux-amd64.tar.gz
+            mv linux-amd64/glide /go/bin/
+            cd /go/src/github.com/olioapps/service-skeleton-go
+            glide install
+      - run:
+          name: Run unit tests
+          # environment:
+          #   CONTACTS_DB_URL: "postgres://rot@localhost:5432/circle_test?sslmode=disable"
+          #   CONTACTS_DB_MIGRATIONS: /go/src/github.com/CircleCI-Public/circleci-demo-go/db/migrations
+          command: |
+            trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+            go test -v  ./... | tee ${TEST_RESULTS}/go-test.out

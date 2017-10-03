@@ -1,7 +1,7 @@
 package service
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	network "github.com/glibs/gin-webserver"
 	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
