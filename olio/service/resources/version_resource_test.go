@@ -28,34 +28,25 @@ func TestVersion(t *testing.T) {
 	versionExtractor := NewExtractor()
 
 	tt := []struct {
-		name string
+		name            string
+		expectedVersion string
 	}{
-		{name: "No extractor"},
-		{name: "With extractor"},
+		{name: "No extractor", expectedVersion: "no version given"},
+		{name: "With extractor", expectedVersion: "cx-messaging-0.0.11"},
 	}
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			if tc.name == "No extractor" {
-				router := gin.New()
-				versionResource := NewVersionResource()
-				router.GET("/api/version", versionResource.getVersion)
-				req, _ := http.NewRequest("GET", "/api/version", nil)
-				res := httptest.NewRecorder()
-				router.ServeHTTP(res, req)
-				assert.Equal(t, "{\n    \"serviceFrameworkVersion\": \""+VERSION+"\",\n    \"appVersion\": \"no version given\"\n}", res.Body.String())
-			}
-
+			router := gin.New()
+			versionResource := NewVersionResource()
 			if tc.name == "With extractor" {
-				router := gin.New()
-				versionResource := NewVersionResource()
 				versionResource.AddVersionExtractor(versionExtractor)
-				router.GET("/api/version", versionResource.getVersion)
-				req, _ := http.NewRequest("GET", "/api/version", nil)
-				res := httptest.NewRecorder()
-				router.ServeHTTP(res, req)
-				assert.Equal(t, "{\n    \"serviceFrameworkVersion\": \""+VERSION+"\",\n    \"appVersion\": \"cx-messaging-0.0.11\"\n}", res.Body.String())
 			}
+			router.GET("/api/version", versionResource.getVersion)
+			req, _ := http.NewRequest("GET", "/api/version", nil)
+			res := httptest.NewRecorder()
+			router.ServeHTTP(res, req)
+			assert.Equal(t, "{\n    \"serviceFrameworkVersion\": \""+VERSION+"\",\n    \"appVersion\": \""+tc.expectedVersion+"\"\n}", res.Body.String())
 		})
 	}
 }
