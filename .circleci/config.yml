@@ -43,15 +43,3 @@ jobs:
           command: |
             trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
             go test -v  ./... | tee ${TEST_RESULTS}/go-test.out
-      # - add_ssh_keys:
-      #     fingerprints:
-      #       - "09:ec:ea:e3:d8:fa:8c:c4:b5:8f:0d:b5:d9:40:35:48"
-      # - setup_remote_docker
-      # - run: |
-      #     if [ "${CIRCLE_BRANCH}" == "master" ]; then
-      #       GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build -v -o cx-messaging
-      #       docker build -t cx-messaging:latest .
-      #       docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
-      #       docker tag cx-messaging:latest registry.heroku.com/cx-messaging/web
-      #       docker push registry.heroku.com/cx-messaging/web
-      #     fi
