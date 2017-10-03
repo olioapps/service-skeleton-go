@@ -1,7 +1,6 @@
 package resources
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -45,15 +44,5 @@ func (hr *HealthResource) getHealth(c *gin.Context) {
 		Uptime: uptime,
 	}
 
-	w := c.Writer
-	w.WriteHeader(200)
-	w.Header().Set("Content-Type", "application/json")
-
-	js, err := json.Marshal(health)
-	if err != nil {
-		hr.ReturnError(c, 500, err.Error())
-		return
-	}
-
-	w.Write(js)
+	hr.ReturnJSON(c, 200, health)
 }

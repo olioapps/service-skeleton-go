@@ -1,8 +1,6 @@
 package resources
 
 import (
-	"encoding/json"
-
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/olioapps/service-skeleton-go/olio/models"
@@ -50,15 +48,5 @@ func (vr *VersionResource) getVersion(c *gin.Context) {
 		SkeletonVersion: skeletonVersion,
 	}
 
-	w := c.Writer
-	w.WriteHeader(200)
-	w.Header().Set("Content-Type", "application/json")
-
-	js, err := json.Marshal(version)
-	if err != nil {
-		vr.ReturnError(c, 500, err.Error())
-		return
-	}
-
-	w.Write(js)
+	vr.ReturnJSON(c, 200, version)
 }
