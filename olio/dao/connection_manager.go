@@ -54,7 +54,10 @@ func NewConnectionManager() *ConnectionManager {
 	connectionManager := ConnectionManager{}
 
 	dbConnectionString := util.GetEnv("DB_CONNECTION_STRING", "root:root@/todo?parseTime=true")
-	dialect := util.GetEnv("DB_CONNECTION_DIALECT", "mysql")
+	dialect, err := util.DbDialect(dbConnectionString)
+	if err != nil {
+		panic(err.Error())
+	}
 
 	log.Info("Connecting to [", dbConnectionString, "], a [", dialect, "] database")
 	connectionManager.db = connectionManager.createDb(dialect, dbConnectionString)

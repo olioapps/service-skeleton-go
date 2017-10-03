@@ -95,12 +95,12 @@ func FirstOrNil(t interface{}) interface{} {
 
 func DbDialect(connectionString string) (string, error) {
 	if len(connectionString) == 0 {
-		return "", errors.New("Must have connection string")
+		return "", errors.New("Must have db connection string")
 	}
 
 	tmp := strings.Split(connectionString, ":")
-	if len(tmp) < 1 {
-		return "", errors.New("Malformed connection string")
+	if len(tmp) < 2 {
+		return "", errors.New("Malformed db connection string")
 	}
 
 	dialect := tmp[0]
@@ -111,5 +111,5 @@ func DbDialect(connectionString string) (string, error) {
 		return "mysql", nil
 	}
 
-	return "", errors.New("Unable to parse connection string")
+	return "", errors.New("Unable to parse db connection string")
 }
