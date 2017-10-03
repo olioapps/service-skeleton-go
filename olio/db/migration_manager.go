@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strconv"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/olioapps/service-skeleton-go/olio/dao"
 	"github.com/olioapps/service-skeleton-go/olio/util"
 )
