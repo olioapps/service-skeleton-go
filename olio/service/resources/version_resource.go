@@ -2,7 +2,6 @@ package resources
 
 import (
 	"encoding/json"
-	"net/http"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -15,6 +14,7 @@ type VersionExtractor interface {
 }
 
 type VersionResource struct {
+	BaseResource
 	versionExtractor VersionExtractor
 }
 
@@ -26,21 +26,21 @@ func NewVersionResource() *VersionResource {
 	return &obj
 }
 
-func (resource *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
-	resource.versionExtractor = versionExtractor
+func (vr *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
+	vr.versionExtractor = versionExtractor
 }
 
-func (resource *VersionResource) Init(r *gin.Engine) {
+func (vr *VersionResource) Init(r *gin.Engine) {
 	log.Debug("Setting up version resource.")
 
-	r.GET("/api/version", resource.getVersion)
+	r.GET("/api/version", vr.getVersion)
 }
 
-func (resource *VersionResource) getVersion(c *gin.Context) {
+func (vr *VersionResource) getVersion(c *gin.Context) {
 	skeletonVersion := VERSION
 	var appVersion string
-	if resource.versionExtractor != nil {
-		appVersion = resource.versionExtractor.GetAppName() + "-" + resource.versionExtractor.GetVersion()
+	if vr.versionExtractor != nil {
+		appVersion = vr.versionExtractor.GetAppName() + "-" + vr.versionExtractor.GetVersion()
 	} else {
 		appVersion = "no version given"
 	}
@@ -56,7 +56,7 @@ func (resource *VersionResource) getVersion(c *gin.Context) {
 
 	js, err := json.Marshal(version)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		vr.ReturnError(c, 500, err.Error())
 		return
 	}
 

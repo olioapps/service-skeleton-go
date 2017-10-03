@@ -3,16 +3,15 @@ package resources
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/olioapps/service-skeleton-go/olio/models"
-	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
 	"github.com/siddontang/go/log"
 )
 
 type HealthResource struct {
+	BaseResource
 	uptimeExtractor UptimeExtractor
 }
 
@@ -25,7 +24,7 @@ func NewHealthResource() *HealthResource {
 	return &obj
 }
 
-func (hr *HealthResource) Init(e *gin.Engine, whiteList *olioMiddleware.WhiteList) {
+func (hr *HealthResource) Init(e *gin.Engine) {
 	log.Debug("setting up health resource")
 
 	e.GET("/api/health", hr.getHealth)
@@ -52,10 +51,9 @@ func (hr *HealthResource) getHealth(c *gin.Context) {
 
 	js, err := json.Marshal(health)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		hr.ReturnError(c, 500, err.Error())
 		return
 	}
 
 	w.Write(js)
-
 }
