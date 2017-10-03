@@ -1,5 +1,5 @@
-hash: 63bfaa2886c2c1949677d5f09910248b1299c8245a76e7ae8dff8fff28d7ffe4
-updated: 2017-10-03T14:57:29.327011676-07:00
+hash: 2eacc6a3f4c4af7a28aa0558e9898fd42cb229e13fdb4852fde7c06141b3347d
+updated: 2017-10-03T15:01:27.496640079-07:00
 imports:
 - name: github.com/gin-gonic/gin
   version: e2212d40c62a98b388a5eb48ecbdcf88534688ba
@@ -42,6 +42,10 @@ imports:
   version: a337a3bc9f0a02cb5d289564e5c97c65e46efc42
 - name: github.com/sirupsen/logrus
   version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
+- name: github.com/stretchr/testify
+  version: 0744955171b0b6e1871ff9d7366abc2b7a7fcec0
+  subpackages:
+  - assert
 - name: golang.org/x/crypto
   version: 3fbbcd23f1cb824e69491a5930cfeff09b12f4d2
   subpackages:
@@ -75,7 +79,3 @@ testImports:
   version: 792786c7400a136282c1664665ae0a8db921c6c2
   subpackages:
   - difflib
-- name: github.com/stretchr/testify
-  version: 0744955171b0b6e1871ff9d7366abc2b7a7fcec0
-  subpackages:
-  - assert
