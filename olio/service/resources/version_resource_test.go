@@ -32,7 +32,7 @@ func TestVersion(t *testing.T) {
 		expectedVersion string
 	}{
 		{name: "No extractor", expectedVersion: "no version given"},
-		{name: "With extractor", expectedVersion: "cx-messaging-0.0.11"},
+		{name: "With extractor", expectedVersion: versionExtractor.GetAppName() + "-" + versionExtractor.GetVersion()},
 	}
 
 	for _, tc := range tt {
