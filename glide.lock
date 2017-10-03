@@ -1,6 +1,11 @@
 hash: fa0ed4f936af4ac399d133436bd46fc02bd4dab065a020222f15ee48f3fa6fde
 updated: 2017-01-19T23:30:56.140491496-08:00
 imports:
+- name: github.com/gin-gonic/gin
+  version: e2212d40c62a98b388a5eb48ecbdcf88534688ba
+  subpackages:
+  - binding
+  - render
 - name: github.com/glibs/gin-webserver
   version: d9d5bc4eaa44be513329fcecee4c3f8529d632b6
 - name: gopkg.in/dgrijalva/jwt-go.v2
