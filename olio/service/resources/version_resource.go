@@ -31,10 +31,10 @@ func (vr *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor
 func (vr *VersionResource) Init(r *gin.Engine) {
 	log.Debug("Setting up version resource.")
 
-	r.GET("/api/version", vr.getVersion)
+	r.GET("/api/version", vr.GetVersion)
 }
 
-func (vr *VersionResource) getVersion(c *gin.Context) {
+func (vr *VersionResource) GetVersion(c *gin.Context) {
 	skeletonVersion := VERSION
 	var appVersion string
 	if vr.versionExtractor != nil {
