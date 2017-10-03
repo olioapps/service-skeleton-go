@@ -1,17 +1,10 @@
 package resources
 
 import (
-	"encoding/json"
-	"net/http"
-
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/olioapps/service-skeleton-go/olio/models"
 )
-
-type Version struct {
-	SkeletonVersion string `json:"serviceFrameworkVersion"`
-	AppVersion      string `json:"appVersion"`
-}
 
 type VersionExtractor interface {
 	GetVersion() string
@@ -19,50 +12,41 @@ type VersionExtractor interface {
 }
 
 type VersionResource struct {
+	BaseResource
 	versionExtractor VersionExtractor
 }
 
 const VERSION = "1.0.2"
 
-func NewVersionResource() VersionResource {
+func NewVersionResource() *VersionResource {
 	obj := VersionResource{}
 
-	return obj
+	return &obj
 }
 
-func (resource *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
-	resource.versionExtractor = versionExtractor
+func (vr *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
+	vr.versionExtractor = versionExtractor
 }
 
-func (resource *VersionResource) Init(r *gin.Engine) {
+func (vr *VersionResource) Init(r *gin.Engine) {
 	log.Debug("Setting up version resource.")
 
-	r.GET("/api/version", resource.getVersion)
+	r.GET("/api/version", vr.getVersion)
 }
 
-func (resource *VersionResource) getVersion(c *gin.Context) {
+func (vr *VersionResource) getVersion(c *gin.Context) {
 	skeletonVersion := VERSION
 	var appVersion string
-	if resource.versionExtractor != nil {
-		appVersion = resource.versionExtractor.GetAppName() + "-" + resource.versionExtractor.GetVersion()
+	if vr.versionExtractor != nil {
+		appVersion = vr.versionExtractor.GetAppName() + "-" + vr.versionExtractor.GetVersion()
 	} else {
 		appVersion = "no version given"
 	}
 
-	version := Version{
+	version := models.Version{
 		AppVersion:      appVersion,
 		SkeletonVersion: skeletonVersion,
 	}
 
-	w := c.Writer
-	w.WriteHeader(200)
-	w.Header().Set("Content-Type", "application/json")
-
-	js, err := json.Marshal(version)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Write(js)
+	vr.ReturnJSON(c, 200, version)
 }
