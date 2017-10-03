@@ -40,10 +40,6 @@ imports:
   version: b616837442153d876b2d0b84d09e5e48a2aa91ee
 - name: github.com/shwoodard/jsonapi
   version: a337a3bc9f0a02cb5d289564e5c97c65e46efc42
-- name: github.com/siddontang/go
-  version: cb568a3e5cc06256f91a2da5a87455f717eb33f4
-  subpackages:
-  - log
 - name: github.com/sirupsen/logrus
   version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
 - name: golang.org/x/crypto
