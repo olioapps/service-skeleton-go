@@ -6,6 +6,8 @@ imports:
   subpackages:
   - binding
   - render
+- name: github.com/go-sql-driver/mysql
+  version: 2e00b5cd70399450106cec6431c2e2ce3cae5034
 - name: github.com/glibs/gin-webserver
   version: d9d5bc4eaa44be513329fcecee4c3f8529d632b6
 - name: gopkg.in/dgrijalva/jwt-go.v2
