@@ -34,7 +34,7 @@ jobs:
             tar zxvf glide-0.9.3-linux-amd64.tar.gz
             mv linux-amd64/glide /go/bin/
             cd /go/src/github.com/olioapps/service-skeleton-go
-            glide install && go build -v
+            glide install
       - run:
           name: Run unit tests
           # environment:
