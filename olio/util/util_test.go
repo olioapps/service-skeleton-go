@@ -12,8 +12,8 @@ func TestDbDialect(t *testing.T) {
 		connectionString string
 		expectedResult   string
 	}{
-		{name: "postgres", connectionString: "postgres://someUser@localhost/someapp?sslmode=disable", expectedResult: "postgres"},
-		{name: "mysql", connectionString: "root:root@/someapp?parseTime=true", expectedResult: "mysql"},
+		{name: "postgres", connectionString: "postgres://someuser@localhost/someapp?sslmode=disable", expectedResult: "postgres"},
+		{name: "mysql", connectionString: "root:somepw@/someapp?parseTime=true", expectedResult: "mysql"},
 		{name: "no connection string", connectionString: "", expectedResult: "Must have db connection string"},
 		{name: "un parseable connection string", connectionString: "bad:connectionstring", expectedResult: "Unable to parse db connection string"},
 		{name: "malformed connection string", connectionString: "badconnectionstring", expectedResult: "Malformed db connection string"},
