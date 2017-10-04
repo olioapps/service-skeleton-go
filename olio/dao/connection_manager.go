@@ -54,7 +54,7 @@ func NewConnectionManager() *ConnectionManager {
 	connectionManager := ConnectionManager{}
 
 	dbConnectionString := util.GetEnv("DB_CONNECTION_STRING", "root:root@/todo?parseTime=true")
-	dialect, err := util.DbDialect(dbConnectionString)
+	dialect, err := util.ParseDbDialect(dbConnectionString)
 	if err != nil {
 		panic("Failed to parse db dialect from connection string: " + err.Error())
 	}
