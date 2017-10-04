@@ -98,18 +98,16 @@ func DbDialect(connectionString string) (string, error) {
 		return "", errors.New("Must have db connection string")
 	}
 
-	tmp := strings.Split(connectionString, ":")
+	tmp := strings.Split(connectionString, "://")
 	if len(tmp) < 2 {
-		return "", errors.New("Malformed db connection string")
+		return "mysql", nil
 	}
 
 	dialect := tmp[0]
 
 	if dialect == "postgres" {
 		return "postgres", nil
-	} else if dialect == "root" {
-		return "mysql", nil
 	}
 
-	return "", errors.New("Unable to parse db connection string")
+	return "mysql", nil
 }
