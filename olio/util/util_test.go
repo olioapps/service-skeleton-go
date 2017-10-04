@@ -20,7 +20,7 @@ func TestDbDialect(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			dialect, err := DbDialect(tc.connectionString)
+			dialect, err := ParseDbDialect(tc.connectionString)
 			if tc.name == "no connection string" {
 				assert.NotNil(t, err)
 				assert.Equal(t, tc.expectedResult, err.Error())

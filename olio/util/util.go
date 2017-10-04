@@ -93,7 +93,7 @@ func FirstOrNil(t interface{}) interface{} {
 	return nil
 }
 
-func DbDialect(connectionString string) (string, error) {
+func ParseDbDialect(connectionString string) (string, error) {
 	if len(connectionString) == 0 {
 		return "", errors.New("Must have db connection string")
 	}

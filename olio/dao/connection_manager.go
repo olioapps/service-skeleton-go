@@ -56,7 +56,7 @@ func NewConnectionManager() *ConnectionManager {
 	dbConnectionString := util.GetEnv("DB_CONNECTION_STRING", "root:root@/todo?parseTime=true")
 	dialect, err := util.DbDialect(dbConnectionString)
 	if err != nil {
-		panic(err.Error())
+		panic("Failed to parse db dialect from connection string: " + err.Error())
 	}
 
 	log.Info("Connecting to [", dbConnectionString, "], a [", dialect, "] database")
