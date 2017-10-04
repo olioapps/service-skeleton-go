@@ -1,11 +1,13 @@
 package util
 
 import (
+	"errors"
 	"io/ioutil"
 	"math/rand"
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"reflect"
@@ -89,4 +91,23 @@ func FirstOrNil(t interface{}) interface{} {
 	}
 
 	return nil
+}
+
+func ParseDbDialect(connectionString string) (string, error) {
+	if len(connectionString) == 0 {
+		return "", errors.New("Must have db connection string")
+	}
+
+	tmp := strings.Split(connectionString, "://")
+	if len(tmp) < 2 {
+		return "mysql", nil
+	}
+
+	dialect := tmp[0]
+
+	if dialect == "postgres" {
+		return "postgres", nil
+	}
+
+	return "mysql", nil
 }
