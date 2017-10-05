@@ -2,7 +2,6 @@ package resources
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/olioapps/service-skeleton-go/olio/dao"
@@ -13,16 +12,8 @@ import (
 
 type HealthResource struct {
 	BaseResource
-	uptimeExtractor   UptimeExtractor
-	dbHealthExtractor DbHealthExtractor
-}
-
-type UptimeExtractor interface {
-	GetUptime() time.Duration
-}
-
-type DbHealthExtractor interface {
-	GetDbExtractor() extractors.DbExtractor
+	uptimeExtractor   extractors.UptimeExtractor
+	dbHealthExtractor extractors.DbHealthExtractor
 }
 
 func NewHealthResource() *HealthResource {
@@ -36,11 +27,11 @@ func (hr *HealthResource) Init(e *gin.Engine) {
 	e.GET("/api/health", hr.getHealth)
 }
 
-func (hr *HealthResource) AddUptimeExtractor(uptimeExtractor UptimeExtractor) {
+func (hr *HealthResource) AddUptimeExtractor(uptimeExtractor extractors.UptimeExtractor) {
 	hr.uptimeExtractor = uptimeExtractor
 }
 
-func (hr *HealthResource) AddDbHealthExtractor(dbHealthExtractor DbHealthExtractor) {
+func (hr *HealthResource) AddDbHealthExtractor(dbHealthExtractor extractors.DbHealthExtractor) {
 	hr.dbHealthExtractor = dbHealthExtractor
 }
 
