@@ -1,0 +1,29 @@
+[[constraint]]
+  name = "github.com/gin-gonic/gin"
+
+[[constraint]]
+  name = "github.com/glibs/gin-webserver"
+
+[[constraint]]
+  name = "github.com/jinzhu/gorm"
+
+[[constraint]]
+  name = "github.com/pborman/uuid"
+
+[[constraint]]
+  name = "github.com/shwoodard/jsonapi"
+
+[[constraint]]
+  name = "github.com/sirupsen/logrus"
+
+[[constraint]]
+  name = "github.com/stretchr/testify"
+
+[[constraint]]
+  name = "golang.org/x/crypto"
+
+[[constraint]]
+  name = "gopkg.in/dgrijalva/jwt-go.v2"
+
+[[constraint]]
+  name = "gopkg.in/mgo.v2"
