@@ -8,7 +8,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/jinzhu/gorm"
-	"github.com/olioapps/service-skeleton-go/olio/util"
+	"github.com/olioapps/service-skeleton-go/olio/extractors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -35,7 +35,7 @@ func NewGormProvider(db *gorm.DB) *ConnectionManager {
 func (self *ConnectionManager) createDb(dbDialect string, dbConnectionString string) *gorm.DB {
 	db, err := gorm.Open(dbDialect, dbConnectionString)
 	if err != nil {
-		panic("failed to connect database")
+		log.Error("failed to connect database")
 	}
 
 	env := os.Getenv("GIN_ENV")
@@ -50,14 +50,22 @@ func (self *ConnectionManager) GetDb() *gorm.DB {
 	return self.db
 }
 
-func NewConnectionManager() *ConnectionManager {
+func (self *ConnectionManager) Ping() error {
+	return self.db.DB().Ping()
+}
+
+func (self *ConnectionManager) Close() error {
+	return self.db.DB().Close()
+}
+
+func NewConnectionManager(dbExtractor extractors.DbExtractor) *ConnectionManager {
 	connectionManager := ConnectionManager{}
 
-	dbConnectionString := util.GetEnv("DB_CONNECTION_STRING", "root:root@/todo?parseTime=true")
-	dialect := util.GetEnv("DB_CONNECTION_DIALECT", "mysql")
+	dbConnectionString := dbExtractor.ExtractConnectionString()
+	dialect := dbExtractor.ExtractDialect()
 
 	log.Info("Connecting to [", dbConnectionString, "], a [", dialect, "] database")
-	connectionManager.db = connectionManager.createDb(dialect, dbConnectionString)
+	connectionManager.db = connectionManager.createDb(string(dialect), dbConnectionString)
 
 	return &connectionManager
 }
