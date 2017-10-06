@@ -70,9 +70,6 @@ func TestHealth(t *testing.T) {
 					assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\",\n    \"dbOk\": \"false\"\n}", res.Body.String())
 					return
 				}
-
-				assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\",\n    \"dbOk\": \"true\"\n}", res.Body.String())
-				return
 			}
 
 			assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\"\n}", res.Body.String())
