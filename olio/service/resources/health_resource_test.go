@@ -66,6 +66,11 @@ func TestHealth(t *testing.T) {
 			router.ServeHTTP(res, req)
 
 			if tc.name == "uptime and dbHealth" {
+				if util.GetEnv("DB_CONNECTION_STRING", "") == "" {
+					assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\",\n    \"dbOk\": \"false\"\n}", res.Body.String())
+					return
+				}
+
 				// need to set  "go.testEnvVars": { "DB_CONNECTION_STRING"...
 				// in VS Code workplace setting to get this to pass
 
