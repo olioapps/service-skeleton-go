@@ -1,12 +1,13 @@
 package service
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	network "github.com/glibs/gin-webserver"
+	"github.com/olioapps/service-skeleton-go/olio/extractors"
 	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
 	olioResources "github.com/olioapps/service-skeleton-go/olio/service/resources"
 	"github.com/olioapps/service-skeleton-go/olio/util"
+	log "github.com/sirupsen/logrus"
 )
 
 type OlioDaemon interface {
@@ -66,12 +67,16 @@ func (obs *OlioBaseService) AddDaemon(daemon OlioDaemon) {
 	obs.daemons = append(obs.daemons, daemon)
 }
 
-func (obs *OlioBaseService) AddVersionExtractor(versionExtractor olioResources.VersionExtractor) {
+func (obs *OlioBaseService) AddVersionExtractor(versionExtractor extractors.VersionExtractor) {
 	obs.versionResource.AddVersionExtractor(versionExtractor)
 }
 
-func (obs *OlioBaseService) AddUptimeExtractor(uptimeExtractor olioResources.UptimeExtractor) {
+func (obs *OlioBaseService) AddUptimeExtractor(uptimeExtractor extractors.UptimeExtractor) {
 	obs.healthResource.AddUptimeExtractor(uptimeExtractor)
+}
+
+func (obs *OlioBaseService) AddDbHealthExtractor(dbHealthExtractor extractors.DbHealthExtractor) {
+	obs.healthResource.AddDbHealthExtractor(dbHealthExtractor)
 }
 
 func (obs *OlioBaseService) Start() {

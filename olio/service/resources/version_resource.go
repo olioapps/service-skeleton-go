@@ -1,19 +1,15 @@
 package resources
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/olioapps/service-skeleton-go/olio/extractors"
 	"github.com/olioapps/service-skeleton-go/olio/models"
+	log "github.com/sirupsen/logrus"
 )
-
-type VersionExtractor interface {
-	GetVersion() string
-	GetAppName() string
-}
 
 type VersionResource struct {
 	BaseResource
-	versionExtractor VersionExtractor
+	versionExtractor extractors.VersionExtractor
 }
 
 const VERSION = "1.0.2"
@@ -24,7 +20,7 @@ func NewVersionResource() *VersionResource {
 	return &obj
 }
 
-func (vr *VersionResource) AddVersionExtractor(versionExtractor VersionExtractor) {
+func (vr *VersionResource) AddVersionExtractor(versionExtractor extractors.VersionExtractor) {
 	vr.versionExtractor = versionExtractor
 }
 
