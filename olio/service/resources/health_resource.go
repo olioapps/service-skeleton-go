@@ -47,17 +47,21 @@ func (hr *HealthResource) getHealth(c *gin.Context) {
 	}
 
 	if hr.dbHealthExtractor != nil {
-		connectionManager := dao.NewConnectionManager(hr.dbHealthExtractor.GetDbExtractor())
-		if err := connectionManager.Ping(); err != nil {
-			health.DbOk = false
-			log.Error("Database not ok: ", err)
-		} else {
-			health.DbOk = true
-		}
+		connectionManager, err := dao.NewConnectionManager(hr.dbHealthExtractor.GetDbExtractor())
+		if err == nil {
+			if err := connectionManager.Ping(); err != nil {
+				health.DbOk = false
+				log.Error("Database not ok: ", err)
+			} else {
+				health.DbOk = true
+			}
 
-		err := connectionManager.Close()
-		if err != nil {
-			log.Error("Error closing db: ", err)
+			err = connectionManager.Close()
+			if err != nil {
+				log.Error("Error closing db: ", err)
+			}
+		} else {
+			log.Error("Connection Error: " + err.Error())
 		}
 	}
 

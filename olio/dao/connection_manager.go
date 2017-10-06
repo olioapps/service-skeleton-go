@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"os"
 	"time"
 
@@ -32,10 +33,10 @@ func NewGormProvider(db *gorm.DB) *ConnectionManager {
 	return &connectionManager
 }
 
-func (self *ConnectionManager) createDb(dbDialect string, dbConnectionString string) *gorm.DB {
+func (self *ConnectionManager) createDb(dbDialect string, dbConnectionString string) (*gorm.DB, error) {
 	db, err := gorm.Open(dbDialect, dbConnectionString)
 	if err != nil {
-		log.Error("failed to connect database")
+		return nil, errors.New("failed to connect database")
 	}
 
 	env := os.Getenv("GIN_ENV")
@@ -43,7 +44,7 @@ func (self *ConnectionManager) createDb(dbDialect string, dbConnectionString str
 		db.LogMode(true)
 	}
 
-	return db
+	return db, nil
 }
 
 func (self *ConnectionManager) GetDb() *gorm.DB {
@@ -58,14 +59,17 @@ func (self *ConnectionManager) Close() error {
 	return self.db.DB().Close()
 }
 
-func NewConnectionManager(dbExtractor extractors.DbExtractor) *ConnectionManager {
+func NewConnectionManager(dbExtractor extractors.DbExtractor) (*ConnectionManager, error) {
 	connectionManager := ConnectionManager{}
 
 	dbConnectionString := dbExtractor.ExtractConnectionString()
 	dialect := dbExtractor.ExtractDialect()
 
 	log.Info("Connecting to [", dbConnectionString, "], a [", dialect, "] database")
-	connectionManager.db = connectionManager.createDb(string(dialect), dbConnectionString)
-
-	return &connectionManager
+	db, err := connectionManager.createDb(string(dialect), dbConnectionString)
+	if err != nil {
+		return nil, err
+	}
+	connectionManager.db = db
+	return &connectionManager, nil
 }
