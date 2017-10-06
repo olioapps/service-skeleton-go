@@ -70,7 +70,7 @@ func TestHealth(t *testing.T) {
 				// in VS Code workplace setting to get this to pass
 
 				// assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\",\n    \"dbOk\": \"true\"\n}", res.Body.String())
-				// return
+				return
 			}
 
 			assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\"\n}", res.Body.String())
