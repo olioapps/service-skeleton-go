@@ -71,10 +71,7 @@ func TestHealth(t *testing.T) {
 					return
 				}
 
-				// need to set  "go.testEnvVars": { "DB_CONNECTION_STRING"...
-				// in VS Code workplace setting to get this to pass
-
-				// assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\",\n    \"dbOk\": \"true\"\n}", res.Body.String())
+				assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\",\n    \"dbOk\": \"true\"\n}", res.Body.String())
 				return
 			}
 
