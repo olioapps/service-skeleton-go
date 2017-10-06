@@ -50,10 +50,10 @@ func (hr *HealthResource) getHealth(c *gin.Context) {
 		connectionManager, err := dao.NewConnectionManager(hr.dbHealthExtractor.GetDbExtractor())
 		if err == nil {
 			if err := connectionManager.Ping(); err != nil {
-				health.DbOk = false
+				health.DbOk = "false"
 				log.Error("Database not ok: ", err)
 			} else {
-				health.DbOk = true
+				health.DbOk = "true"
 			}
 
 			err = connectionManager.Close()
@@ -61,6 +61,7 @@ func (hr *HealthResource) getHealth(c *gin.Context) {
 				log.Error("Error closing db: ", err)
 			}
 		} else {
+			health.DbOk = "false"
 			log.Error("Connection Error: " + err.Error())
 		}
 	}
