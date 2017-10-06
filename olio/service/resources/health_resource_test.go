@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/olioapps/service-skeleton-go/olio/extractors"
-	"github.com/thedataguild/faer/util"
+	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type UptimeExtractor struct {
