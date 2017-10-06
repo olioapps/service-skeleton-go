@@ -71,7 +71,6 @@ func TestHealth(t *testing.T) {
 			}
 
 			assert.Equal(t, "{\n    \"uptime\": \"0.001 hours\",\n    \"DbOk\": false\n}", res.Body.String())
-
 		})
 	}
 }
