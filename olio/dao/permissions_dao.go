@@ -1,24 +1,22 @@
 package dao
 
 import (
-	"github.com/olioapps/service-skeleton-go/olio/common/models"
 	"github.com/olioapps/service-skeleton-go/olio/common/filter"
+	"github.com/olioapps/service-skeleton-go/olio/common/models"
 )
 
 type PermissionsDAO struct {
-	BaseDAO
+	baseDAO DAO
 }
 
-func NewPermissionsDAO(connectionManager ConnectionProvider) *PermissionsDAO {
-	dao := PermissionsDAO{
-		BaseDAO{connectionManager, models.AccessToken{}},
-	}
+func NewPermissionsDAO(connectionManager ConnectionProvider, baseDAO DAO) *PermissionsDAO {
+	dao := PermissionsDAO{baseDAO}
 
 	return &dao
 }
 
 func (self *PermissionsDAO) Find(filter *filters.AccessTokenFilter) ([]models.AccessToken, error) {
-	db := self.connectionManager.GetDb()
+	db := self.baseDAO.GetConnectionManager().GetDb()
 
 	if filter.Token != "" {
 		db = db.Where("token = ?", filter.Token)
@@ -28,4 +26,8 @@ func (self *PermissionsDAO) Find(filter *filters.AccessTokenFilter) ([]models.Ac
 	db = db.Find(&results)
 
 	return results, db.Error
+}
+
+func (self *PermissionsDAO) Insert(accessToken *models.AccessToken) error {
+	return self.baseDAO.Insert(accessToken)
 }

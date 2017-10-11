@@ -2,22 +2,32 @@ package dao
 
 import (
 	"github.com/jinzhu/gorm"
-	"errors"
-	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type IDAware interface {
-	GetID() string
-	SetID(id string)
+	GetID() interface{}
+	SetID(id interface{})
 }
 
 type BaseDAO struct {
-	connectionManager ConnectionProvider
-	model interface{}
+	ConnectionManager ConnectionProvider
+	Model             interface{}
+}
+
+type DAO interface {
+	Delete(object IDAware, tx ...*gorm.DB) error
+	DeleteByID(id interface{})
+	Insert(object IDAware) error
+	Update(object IDAware) error
+	GetConnectionManager() ConnectionProvider
 }
 
 func (d *BaseDAO) Db() *gorm.DB {
-	return d.connectionManager.GetDb()
+	return d.ConnectionManager.GetDb()
+}
+
+func (d *BaseDAO) GetConnectionManager() ConnectionProvider {
+	return d.ConnectionManager
 }
 
 func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {
@@ -27,7 +37,7 @@ func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {
 	if hasTransaction {
 		db = tx[0]
 	} else {
-		db = d.connectionManager.GetDb()
+		db = d.ConnectionManager.GetDb()
 	}
 
 	if err := db.Delete(object).Error; err != nil {
@@ -36,25 +46,8 @@ func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {
 	return db.Error
 }
 
-func (d *BaseDAO) DeleteByID(id string) error {
-	db := d.connectionManager.GetDb()
-	db = db.Where("id = ?", id).Delete(d.model)
+func (d *BaseDAO) DeleteByID(id interface{}) error {
+	db := d.ConnectionManager.GetDb()
+	db = db.Where("id = ?", id).Delete(d.Model)
 	return db.Error
-}
-
-func (d *BaseDAO) Insert(object IDAware) error {
-	if object.GetID() != "" {
-		return errors.New("Cannot insert an object that already has an ID")
-	}
-	object.SetID(util.RandomString())
-	db := d.connectionManager.GetDb()
-	return db.Create(object).Error
-}
-
-func (d *BaseDAO) Update(object IDAware) error {
-	if object.GetID() == "" {
-		return errors.New("Cannot update object without an ID")
-	}
-	db := d.connectionManager.GetDb()
-	return db.Save(object).Error
 }
