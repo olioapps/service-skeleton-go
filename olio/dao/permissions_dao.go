@@ -1,17 +1,19 @@
 package dao
 
 import (
-	"github.com/olioapps/service-skeleton-go/olio/common/models"
 	"github.com/olioapps/service-skeleton-go/olio/common/filter"
+	"github.com/olioapps/service-skeleton-go/olio/common/models"
 )
 
 type PermissionsDAO struct {
-	BaseDAO
+	StringBaseDAO
 }
 
 func NewPermissionsDAO(connectionManager ConnectionProvider) *PermissionsDAO {
 	dao := PermissionsDAO{
-		BaseDAO{connectionManager, models.AccessToken{}},
+		StringBaseDAO{
+			BaseDAO{connectionManager, models.AccessToken{}},
+		},
 	}
 
 	return &dao

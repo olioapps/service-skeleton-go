@@ -11,7 +11,8 @@ type StringBaseDAO struct {
 }
 
 func (d *StringBaseDAO) Insert(object IDAware) error {
-	if object.GetID() != "" {
+	id := object.GetID().(string)
+	if id != "" {
 		return errors.New("Cannot insert an object that already has an ID")
 	}
 	object.SetID(util.RandomString())
@@ -20,7 +21,8 @@ func (d *StringBaseDAO) Insert(object IDAware) error {
 }
 
 func (d *StringBaseDAO) Update(object IDAware) error {
-	if object.GetID() == "" {
+	id := object.GetID().(string)
+	if id == "" {
 		return errors.New("Cannot update object without an ID")
 	}
 	db := d.connectionManager.GetDb()
