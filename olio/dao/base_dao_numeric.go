@@ -14,7 +14,8 @@ func (d *NumericBaseDAO) Insert(object IDAware) error {
 	if id > 0 {
 		return errors.New("Cannot insert an object that already has an ID")
 	}
-	db := d.connectionManager.GetDb()
+
+	db := d.ConnectionManager.GetDb()
 	return db.Create(object).Error
 }
 
@@ -23,6 +24,6 @@ func (d *NumericBaseDAO) Update(object IDAware) error {
 	if id < 1 {
 		return errors.New("Cannot update object without an ID")
 	}
-	db := d.connectionManager.GetDb()
+	db := d.ConnectionManager.GetDb()
 	return db.Save(object).Error
 }

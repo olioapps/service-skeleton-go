@@ -10,8 +10,8 @@ type IDAware interface {
 }
 
 type BaseDAO struct {
-	connectionManager ConnectionProvider
-	model             interface{}
+	ConnectionManager ConnectionProvider
+	Model             interface{}
 }
 
 type DAO interface {
@@ -23,11 +23,11 @@ type DAO interface {
 }
 
 func (d *BaseDAO) Db() *gorm.DB {
-	return d.connectionManager.GetDb()
+	return d.ConnectionManager.GetDb()
 }
 
 func (d *BaseDAO) GetConnectionManager() ConnectionProvider {
-	return d.connectionManager
+	return d.ConnectionManager
 }
 
 func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {
@@ -37,7 +37,7 @@ func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {
 	if hasTransaction {
 		db = tx[0]
 	} else {
-		db = d.connectionManager.GetDb()
+		db = d.ConnectionManager.GetDb()
 	}
 
 	if err := db.Delete(object).Error; err != nil {
@@ -47,7 +47,7 @@ func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {
 }
 
 func (d *BaseDAO) DeleteByID(id interface{}) error {
-	db := d.connectionManager.GetDb()
-	db = db.Where("id = ?", id).Delete(d.model)
+	db := d.ConnectionManager.GetDb()
+	db = db.Where("id = ?", id).Delete(d.Model)
 	return db.Error
 }
