@@ -12,7 +12,7 @@ type VersionResource struct {
 	versionExtractor extractors.VersionExtractor
 }
 
-const VERSION = "1.0.2"
+const VERSION = "1.0.3"
 
 func NewVersionResource() *VersionResource {
 	obj := VersionResource{}
