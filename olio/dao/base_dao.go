@@ -14,8 +14,20 @@ type BaseDAO struct {
 	model             interface{}
 }
 
+type DAO interface {
+	Delete(object IDAware, tx ...*gorm.DB) error
+	DeleteByID(id interface{})
+	Insert(object IDAware) error
+	Update(object IDAware) error
+	GetConnectionManager() ConnectionProvider
+}
+
 func (d *BaseDAO) Db() *gorm.DB {
 	return d.connectionManager.GetDb()
+}
+
+func (d *BaseDAO) GetConnectionManager() ConnectionProvider {
+	return d.connectionManager
 }
 
 func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {

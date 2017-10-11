@@ -6,21 +6,17 @@ import (
 )
 
 type PermissionsDAO struct {
-	StringBaseDAO
+	baseDAO DAO
 }
 
-func NewPermissionsDAO(connectionManager ConnectionProvider) *PermissionsDAO {
-	dao := PermissionsDAO{
-		StringBaseDAO{
-			BaseDAO{connectionManager, models.AccessToken{}},
-		},
-	}
+func NewPermissionsDAO(connectionManager ConnectionProvider, baseDAO DAO) *PermissionsDAO {
+	dao := PermissionsDAO{baseDAO}
 
 	return &dao
 }
 
 func (self *PermissionsDAO) Find(filter *filters.AccessTokenFilter) ([]models.AccessToken, error) {
-	db := self.connectionManager.GetDb()
+	db := self.baseDAO.GetConnectionManager().GetDb()
 
 	if filter.Token != "" {
 		db = db.Where("token = ?", filter.Token)
@@ -30,4 +26,8 @@ func (self *PermissionsDAO) Find(filter *filters.AccessTokenFilter) ([]models.Ac
 	db = db.Find(&results)
 
 	return results, db.Error
+}
+
+func (self *PermissionsDAO) Insert(accessToken *models.AccessToken) error {
+	return self.baseDAO.Insert(accessToken)
 }
