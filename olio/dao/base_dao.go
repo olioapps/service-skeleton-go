@@ -2,18 +2,16 @@ package dao
 
 import (
 	"github.com/jinzhu/gorm"
-	"errors"
-	"github.com/olioapps/service-skeleton-go/olio/util"
 )
 
 type IDAware interface {
-	GetID() string
-	SetID(id string)
+	GetID() interface{}
+	SetID(id interface{})
 }
 
 type BaseDAO struct {
 	connectionManager ConnectionProvider
-	model interface{}
+	model             interface{}
 }
 
 func (d *BaseDAO) Db() *gorm.DB {
@@ -36,25 +34,8 @@ func (d *BaseDAO) Delete(object IDAware, tx ...*gorm.DB) error {
 	return db.Error
 }
 
-func (d *BaseDAO) DeleteByID(id string) error {
+func (d *BaseDAO) DeleteByID(id interface{}) error {
 	db := d.connectionManager.GetDb()
 	db = db.Where("id = ?", id).Delete(d.model)
 	return db.Error
-}
-
-func (d *BaseDAO) Insert(object IDAware) error {
-	if object.GetID() != "" {
-		return errors.New("Cannot insert an object that already has an ID")
-	}
-	object.SetID(util.RandomString())
-	db := d.connectionManager.GetDb()
-	return db.Create(object).Error
-}
-
-func (d *BaseDAO) Update(object IDAware) error {
-	if object.GetID() == "" {
-		return errors.New("Cannot update object without an ID")
-	}
-	db := d.connectionManager.GetDb()
-	return db.Save(object).Error
 }
