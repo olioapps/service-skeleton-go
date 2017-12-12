@@ -47,6 +47,7 @@ func (self *MigrationManager) perequisites() error {
 	if rows == nil || rows.Err() == sql.ErrNoRows || !rows.Next() {
 		return db.Exec("INSERT INTO migrations values (?)", 0).Error
 	}
+	rows.Close()
 	return nil
 }
 
