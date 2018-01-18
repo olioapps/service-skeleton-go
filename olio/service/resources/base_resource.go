@@ -1,18 +1,19 @@
 package resources
 
 import (
-	"errors"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
-	"github.com/olioapps/service-skeleton-go/olio/api"
-	"github.com/olioapps/service-skeleton-go/olio/util"
 	"net/url"
-	"github.com/shwoodard/jsonapi"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/jsonapi"
+	"github.com/j0ni/service-skeleton-go/olio/api"
+	"github.com/j0ni/service-skeleton-go/olio/util"
 )
 
 type BaseResource struct {
@@ -37,7 +38,7 @@ func (self *BaseResource) ReturnJSONAPI(c *gin.Context, status int, record inter
 	w.Header().Set("Content-Type", "application/json")
 
 	if record != nil {
-		if err := jsonapi.MarshalOnePayload(w, record); err != nil {
+		if err := jsonapi.MarshalPayload(w, record); err != nil {
 			self.ReturnJSONException(c, api.NewRuntimeException(err.Error()))
 		}
 	}
@@ -54,7 +55,7 @@ func (self *BaseResource) ReturnJSONAPIArray(c *gin.Context, status int, records
 			Data: []*jsonapi.Node{},
 		})
 	} else {
-		if err := jsonapi.MarshalManyPayload(w, records); err != nil {
+		if err := jsonapi.MarshalPayload(w, records); err != nil {
 			self.ReturnJSONException(c, api.NewRuntimeException(err.Error()))
 		}
 	}
