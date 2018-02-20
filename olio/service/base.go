@@ -2,12 +2,12 @@ package service
 
 import (
 	network "github.com/Motiva-AI/gin-webserver"
-	"github.com/olioapps/service-skeleton-go/olio/extractors"
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/olioapps/service-skeleton-go/olio/extractors"
 	olioMiddleware "github.com/olioapps/service-skeleton-go/olio/service/middleware"
 	olioResources "github.com/olioapps/service-skeleton-go/olio/service/resources"
 	"github.com/olioapps/service-skeleton-go/olio/util"
+	log "github.com/sirupsen/logrus"
 )
 
 type OlioDaemon interface {
