@@ -7,6 +7,7 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/mssql"
 
 	"github.com/jinzhu/gorm"
 	"github.com/olioapps/service-skeleton-go/olio/extractors"
