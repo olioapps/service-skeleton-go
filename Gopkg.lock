@@ -7,6 +7,17 @@
   revision = "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/denisenkom/go-mssqldb"
+  packages = [
+    ".",
+    "internal/cp",
+    "internal/decimal",
+    "internal/querytext"
+  ]
+  revision = "62cf760a6c9ebb8ab413c1a8f1de5c7841648473"
+
+[[projects]]
   name = "github.com/gin-gonic/gin"
   packages = [
     ".",
@@ -29,6 +40,12 @@
   revision = "a8b7ed4454a6a4f98f85d3ad558cd6d97cec6959"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/golang-sql/civil"
+  packages = ["."]
+  revision = "cb61b32ac6fe84d34b81730175f91965e43d0f90"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   revision = "2402d76f3d41f928c7902a765dfc872356dd3aad"
@@ -44,6 +61,7 @@
   name = "github.com/jinzhu/gorm"
   packages = [
     ".",
+    "dialects/mssql",
     "dialects/mysql",
     "dialects/postgres"
   ]
@@ -101,7 +119,8 @@
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
-    "blowfish"
+    "blowfish",
+    "md4"
   ]
   revision = "3fbbcd23f1cb824e69491a5930cfeff09b12f4d2"
 
@@ -146,6 +165,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3b41d591e8de7998037ac0efe14c94a47a6c96aeb111f54fcf2fd1d40d64de44"
+  inputs-digest = "c24f696f942a1987af062118f3373a78668f501d0fadeed790c2e1a6be72bda6"
   solver-name = "gps-cdcl"
   solver-version = 1
