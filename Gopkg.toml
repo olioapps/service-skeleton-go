@@ -2,7 +2,7 @@
   name = "github.com/gin-gonic/gin"
 
 [[constraint]]
-  name = "github.com/glibs/gin-webserver"
+  name = "github.com/Motiva-AI/gin-webserver"
 
 [[constraint]]
   name = "github.com/jinzhu/gorm"
