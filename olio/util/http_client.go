@@ -12,6 +12,7 @@ type HttpClient struct {
 	BaseURL    string
 	AuthToken  string
 	AuthScheme string
+	Headers    map[string]string
 }
 
 func NewHttpClient(baseURL string) *HttpClient {
@@ -29,7 +30,7 @@ func (client *HttpClient) Put(uri string, bodyStr string) (*http.Response, strin
 	return client.requestWithBody("PUT", uri, bodyStr, client.AuthToken)
 }
 
-func (client *HttpClient) Get(uri string) (*http.Response, string, error)  {
+func (client *HttpClient) Get(uri string) (*http.Response, string, error) {
 	return client.requestNoBody("GET", uri, client.AuthToken)
 }
 
@@ -54,9 +55,13 @@ func (client *HttpClient) requestWithBody(verb string, uri string, bodyStr strin
 		authScheme = "Basic"
 	}
 	if authToken != "" {
-		req.Header.Set("Authorization", authScheme + " " + authToken)
+		req.Header.Set("Authorization", authScheme+" "+authToken)
 	}
 	req.Header.Set("Content-Type", "application/json")
+
+	for key, value := range client.Headers {
+		req.Header.Set(key, value)
+	}
 
 	httpClient := &http.Client{}
 	resp, err := httpClient.Do(req)
