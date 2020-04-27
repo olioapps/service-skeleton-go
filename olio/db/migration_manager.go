@@ -5,9 +5,9 @@ import (
 	"errors"
 	"strconv"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/olioapps/service-skeleton-go/olio/dao"
 	"github.com/olioapps/service-skeleton-go/olio/util"
+	log "github.com/sirupsen/logrus"
 )
 
 type MigrationManager struct {
@@ -47,7 +47,7 @@ func (self *MigrationManager) perequisites() error {
 	if rows == nil || rows.Err() == sql.ErrNoRows || !rows.Next() {
 		return db.Exec("INSERT INTO migrations values (?)", 0).Error
 	}
-        rows.Close()
+	rows.Close()
 	return nil
 }
 

@@ -5,17 +5,17 @@ import (
 	"errors"
 	"html/template"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/hectane/go-nonblockingchan"
-	"github.com/sendgrid/sendgrid-go"
+	nbc "github.com/hectane/go-nonblockingchan"
 	"github.com/olioapps/service-skeleton-go/olio/util"
+	"github.com/sendgrid/sendgrid-go"
+	log "github.com/sirupsen/logrus"
 )
 
 type EmailAPI struct {
-	sendGridKey        string
-	outgoingMail       *nbc.NonBlockingChan
-	templates          map[string]*template.Template
-	SenderFunction     func(*Email) error
+	sendGridKey    string
+	outgoingMail   *nbc.NonBlockingChan
+	templates      map[string]*template.Template
+	SenderFunction func(*Email) error
 }
 
 type Email struct {
